@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  * uniquement de fournir une méthode [actionPerformed] indiquant la
  * réponse du contrôleur à la réception d'un événement.
  */
-class Controleur implements ActionListener {
+class ControleurHaut implements ActionListener {
     /**
      * On garde un pointeur vers le modèle, car le contrôleur doit
      * provoquer un appel de méthode du modèle.
@@ -20,12 +20,14 @@ class Controleur implements ActionListener {
      * englobante [VueCommandes].
      */
     Ile ile;
-    public Controleur(Ile ile) { this.ile = ile; }
+    public ControleurHaut(Ile ile) { this.ile = ile; }
+
     /**
      * Action effectuée à réception d'un événement : appeler la
      * méthode [fin_de_tour] du modèle.
      */
     public void actionPerformed(ActionEvent e) {
+        ile.joueur.move(Direction.DROITE);
         ile.fin_de_tour();
     }
 }

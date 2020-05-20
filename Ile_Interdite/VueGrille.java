@@ -89,7 +89,6 @@ class VueGrille extends JPanel implements Observer {
             case SUBMERGEE: g.setColor(Color.BLUE.darker()); break;
         }
         if(z.isHelico()){
-            System.out.println(x + " " + y + " " + TAILLE );
             g.setColor(Color.BLACK);
         }
         /* Coloration d'un rectangle. */

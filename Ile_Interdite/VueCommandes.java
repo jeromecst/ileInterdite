@@ -23,8 +23,14 @@ class VueCommandes extends JPanel {
           texte qui doit l'étiqueter.
           Puis on ajoute ce bouton au panneau [this].
          */
-        JButton boutonAvance = new JButton("tour");
-        this.add(boutonAvance);
+        JButton boutonDroite = new JButton(">");
+        JButton boutonGauche = new JButton("<");
+        JButton boutonHaut = new JButton("^");
+        JButton boutonBas = new JButton("v");
+        this.add(boutonGauche);
+        this.add(boutonDroite);
+        this.add(boutonHaut);
+        this.add(boutonBas);
         /*
           Le bouton, lorsqu'il est cliqué par l'utilisateur, produit un
           événement, de classe [ActionEvent].
@@ -47,8 +53,8 @@ class VueCommandes extends JPanel {
           contrôleur sera donc particulièrement simple. Cela nécessite
           néanmoins la création d'une classe dédiée.
          */
-        Controleur ctrl = new Controleur(ile);
+        ControleurHaut ctrl = new ControleurHaut(ile);
         /* Enregistrement du contrôleur comme auditeur du bouton. */
-        boutonAvance.addActionListener(ctrl);
+        boutonDroite.addActionListener(ctrl);
     }
 }
