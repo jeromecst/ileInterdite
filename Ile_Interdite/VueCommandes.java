@@ -53,8 +53,14 @@ class VueCommandes extends JPanel {
           contrôleur sera donc particulièrement simple. Cela nécessite
           néanmoins la création d'une classe dédiée.
          */
-        ControleurHaut ctrl = new ControleurHaut(ile);
+        ControleurDroite ctrl = new ControleurDroite(ile);
+        ControleurBas ctrl2 = new ControleurBas(ile);
+        ControleurHaut ctrl3 = new ControleurHaut(ile);
+        ControleurGauche ctrl4 = new ControleurGauche(ile);
         /* Enregistrement du contrôleur comme auditeur du bouton. */
         boutonDroite.addActionListener(ctrl);
+        boutonBas.addActionListener(ctrl2);
+        boutonHaut.addActionListener(ctrl3);
+        boutonGauche.addActionListener(ctrl4);
     }
 }

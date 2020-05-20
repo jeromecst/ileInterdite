@@ -22,8 +22,8 @@ public class Joueur {
 
     boolean move(Direction direction){
         switch (direction){
-            case BAS: return canMove(this.x, this.y-1 );
-            case HAUT: return canMove(this.x, this.y +1 );
+            case BAS: return canMove(this.x, this.y+1 );
+            case HAUT: return canMove(this.x, this.y -1 );
             case GAUCHE: return canMove(this.x - 1 , this.y);
             case DROITE: return canMove(this.x + 1, this.y);
         }
