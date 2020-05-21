@@ -6,7 +6,7 @@ class Ile extends Observable {
     // On fixe la taille de la grille.
     public static final int HAUTEUR=20, LARGEUR=20;
     // On fixe le pourcentage de zones associées à un élément.
-    public static final double SPECIAL=.3;
+    public static final double SPECIAL=.6;
     // On stocke un tableau de zones.
     private final Zone[][] zones;
     // Nombre de joueurs
@@ -15,7 +15,7 @@ class Ile extends Observable {
     Joueur[] joueur = new Joueur[nbJoueurs];
     // Int qui reconnait le joueur actuel, valeur comprise entre 0 et nbJoueurs - 1
     public int joueurActuel = 0;
-    private final Random rd = new Random();
+    final Random rd = new Random();
     // Compteur qui compte le nombre d'actions du joueurs actuel
     public int compteur = 0;
     // Etat dans lequel les boutons permettent d'assecher une zone adjacente
@@ -33,28 +33,27 @@ class Ile extends Observable {
         for(int i=0; i<LARGEUR+1; i++) {
             for(int j=0; j<HAUTEUR+1; j++) {
                 zones[i][j] = new Zone(this,i, j);
-                setElem(zones[i][j]);
             }
         }
         setHelico();
     }
 
-    /**
-     * Permet d'attribuer un élément à une zone
-     * @param z
-     */
-    private void setElem(Zone z){
-        double pourcent = rd.nextDouble();
-        if(pourcent < SPECIAL){
-            switch (rd.nextInt(4)){
-                case 0: z.setElem(Element.EAU); break;
-                case 1: z.setElem(Element.AIR); break;
-                case 2: z.setElem(Element.TERRE); break;
-                case 3: z.setElem(Element.FEU); break;
-            }
+    public boolean ajouteCleeAleatoireJoueurActuel(){
+        double chance  = this.getJoueurActuel().getZone().getChanceClef();
+        Element elem = this.getJoueurActuel().getZone().getElement();
+        if(this.rd.nextDouble() < chance && elem != Element.AUCUN && ! this.getJoueurActuel().hasKey(new Clef(elem))){
+            this.getJoueurActuel().ajouteClefs(new Clef(elem));
+            System.out.println(this.getJoueurActuel().toString() + " trouve une clé de type " + elem.toString());
+            return true;
         }
+        return false;
     }
 
+
+    /**
+     * Fonction zoneAdjacenteInnondee
+     * @return vrai si une zone autour du joueur actuelle est innondée, faux sinon
+     */
     public boolean zoneAdjacenteInnondee(){
         int x = this.getJoueurActuel().x;
         int y = this.getJoueurActuel().y;
@@ -65,6 +64,12 @@ class Ile extends Observable {
                 ;
     }
 
+    /**
+     * Fonction estInondee
+     * @param x la position x
+     * @param y la position y
+     * @return vrai si la zone est inondée, faux sinon
+     */
     private boolean estInondee(int x, int y){
         if(x > LARGEUR || y>HAUTEUR || x<0 || y<0){
             return false;
@@ -72,6 +77,12 @@ class Ile extends Observable {
         return this.getZone(x, y).getEtat() == Etat.INNONDEE;
     }
 
+    /**
+     * Fonction qui permet d'assecher une zone par rapport un position
+     * donnée par le joueur actuel
+     * @param direction la direction par rapport au joueur actuel
+     * @return vrai si on a pu assécher, faux sinon
+     */
     public boolean asseche(Direction direction){
         int x = this.getJoueurActuel().x;
         int y = this.getJoueurActuel().y;
@@ -84,6 +95,10 @@ class Ile extends Observable {
         return false;
     }
 
+    /**
+     * Fonction qui choisie une zone helicoptère au hasard
+     * et qui attribue ses coordonnées à tous les joueurs
+     */
     private void setHelico() {
         int x = this.rd.nextInt(LARGEUR);
         int y = this.rd.nextInt(HAUTEUR);
@@ -94,13 +109,15 @@ class Ile extends Observable {
     }
 
     /**
+     * Fonction getJoueurActuel
      * @return Renvoie le joueur i
      */
     Joueur getJoueurActuel(){
-        return this.joueur[joueurActuel];
+        return this.getJoueur(joueurActuel);
     }
 
     /**
+     * Fonction getJoueur
      * @param i le numéro du joueur
      * @return renvoie le joueur i
      */
@@ -108,7 +125,6 @@ class Ile extends Observable {
         return this.joueur[i];
     }
 
-    //TODO condition d'arrêt quand toutes les zones sont submergées
     /**
      * Fonction qui innonde 3 zones aléatoires, si la zone est déjà inondé, elle sera submergée
      * On ne submerge pas les zones déjà subermgées
@@ -126,6 +142,7 @@ class Ile extends Observable {
     }
 
     /**
+     * Fonction getZone
      * @param x position x
      * @param y position y
      * @return renvoie la zone à la position demandée
