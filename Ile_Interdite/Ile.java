@@ -4,13 +4,13 @@ import java.util.Random;
 
 class Ile extends Observable {
     // On fixe la taille de la grille.
-    public static final int HAUTEUR=20, LARGEUR=20;
+    public static final int HAUTEUR=7, LARGEUR=7;
     // On fixe le pourcentage de zones associées à un élément.
     public static final double SPECIAL=.9;
     // On stocke un tableau de zones.
     private final Zone[][] zones;
     // Nombre de joueurs
-    public final int nbJoueurs = 4;
+    public final int nbJoueurs = 2;
     // Tableau du nombre de joueurs
     Joueur[] joueur = new Joueur[nbJoueurs];
     // Int qui reconnait le joueur actuel, valeur comprise entre 0 et nbJoueurs - 1
@@ -36,17 +36,27 @@ class Ile extends Observable {
             }
         }
         setHelico();
+        setArtefacts();
     }
 
-    public boolean ajouteCleeAleatoireJoueurActuel(){
+    private void setArtefacts() {
+        Element[] arts = {Element.FEU, Element.AIR, Element.EAU, Element.TERRE};
+        int x, y, i = 3;
+        while(i>=0){
+            x = rd.nextInt(LARGEUR);
+            y = rd.nextInt(HAUTEUR);
+            if(this.getZone(x, y).setArtefacts(arts[i])){
+                i--;
+            }
+        }
+    }
+
+    public void ajouteCleeAleatoireJoueurActuel(){
         double chance  = this.getJoueurActuel().getZone().getChanceClef();
         Element elem = this.getJoueurActuel().getZone().getElement();
         if(this.rd.nextDouble() < chance && elem != Element.AUCUN && ! this.getJoueurActuel().hasKey(new Clef(elem))){
             this.getJoueurActuel().ajouteClefs(new Clef(elem));
-            System.out.println(this.getJoueurActuel().toString() + " trouve une clé de type " + elem.toString());
-            return true;
         }
-        return false;
     }
 
 

@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Joueur {
-    private ArrayList<Clef> clefs;
+    private final ArrayList<Clef> clefs;
+    private final ArrayList<Element> artefacts;
     private final Ile ile;
     int x;
     int y;
-    private String name;
-    private int num;
+    private final String name;
+    private final int num;
 
     public Joueur(Ile ile, int x, int y, String s, int n){
         this.x = x;
@@ -17,7 +18,27 @@ public class Joueur {
         this.ile = ile;
         this.name = s;
         this.clefs = new ArrayList<>();
+        this.artefacts = new ArrayList<>();
         this.num = n;
+    }
+
+    boolean prendreArtefact(){
+        if(artefactMatchKey()){
+            System.out.println("Artefact Match key !!");
+            this.artefacts.add(this.getZone().getArtefact());
+            this.getZone().removeArtefact();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean artefactMatchKey(){
+        for (Clef c : this.clefs){
+            if(this.getZone().getArtefact() == c.getType()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public int getNum() {
@@ -30,7 +51,7 @@ public class Joueur {
 
     boolean hasKey(Clef clef){
         for(Clef c: this.clefs){
-            if (c.type == clef.type)
+            if (c.getType() == clef.getType())
                 return true;
         }
         return false;

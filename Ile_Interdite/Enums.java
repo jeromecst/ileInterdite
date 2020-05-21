@@ -11,7 +11,7 @@ enum Element{
     EAU,
     TERRE,
     FEU,
-    AUCUN
+    AUCUN;
 }
 
 enum Direction{

@@ -7,12 +7,13 @@ package Ile_Interdite;
  */
 class Zone {
     /** On conserve un pointeur vers la classe principale du modèle. */
-    private Ile ile;
+    private final Ile ile;
     private Etat etat;
     private Element element;
     private boolean helico;
     private final int x, y;
     private double chanceClef = 0;
+    private Element artefact = Element.AUCUN;
 
     public Zone(Ile ile, int x, int y, Element elem) {
         this.ile = ile;
@@ -30,8 +31,24 @@ class Zone {
 
     void initChance() {
         if(this.getElement() != Element.AUCUN){
-            this.chanceClef = this.ile.rd.nextDouble()/4.;
+            this.chanceClef = this.ile.rd.nextDouble()/2.;
         }
+    }
+
+    void removeArtefact(){
+        this.artefact = Element.AUCUN;
+    }
+
+    public Element getArtefact() {
+        return artefact;
+    }
+
+    boolean setArtefacts(Element elt){
+        if(this.artefact == Element.AUCUN && ! this.isHelico()){
+            this.artefact = elt;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -70,10 +87,6 @@ class Zone {
             case SUBMERGEE:
                 this.etat = Etat.SUBMERGEE; break;
         }
-    }
-
-    void printCoord(){
-        System.out.println("x: " + this.x + ", y: " + this.y);
     }
 
     void setHelico(){

@@ -1,7 +1,7 @@
 package Ile_Interdite;
 
 public class Clef {
-    Element type;
+    private final Element type;
 
     public Clef(Element elem){
         this.type = elem;

@@ -16,7 +16,7 @@ class VueGrille extends JPanel implements Observer {
     /* On maintient une référence vers le modèle. */
     private final Ile ile;
     /* Définition d'une taille (en pixels) pour l'affichage des zones. */
-    private final static int TAILLE = 30;
+    private final static int TAILLE = 50;
     private final static int offset = ((int) (TAILLE*7./30.));
     Color[] colorList = {Color.RED, Color.BLUE, Color.GREEN, Color.CYAN.brighter()};
 
@@ -83,16 +83,17 @@ class VueGrille extends JPanel implements Observer {
         }
     }
 
+    //TODO optimiser
     private void paintClefsJoueur(Graphics g, Joueur j){
-        int positionY = TAILLE*(22 + j.getNum());
+        int positionY = TAILLE*(Ile.HAUTEUR + j.getNum() + 1);
         g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE-offset));
         g.setColor(Color.BLACK);
-        g.drawString(j.toString() +" : ", 0, positionY);
+        g.drawString(j.toString() +" : ", 1, positionY);
         for(Clef c: j.getAllKeys()){
-            switch (c.type){
+            switch (c.getType()){
                 case EAU:
                     g.setColor(Color.BLUE);
-                    g.fillOval(offset*3 + TAILLE*1, positionY-offset*4, TAILLE , TAILLE);
+                    g.fillOval(offset*3 + TAILLE, positionY-offset*4, TAILLE , TAILLE);
                     g.setColor(Color.WHITE);
                     g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/3));
                     g.drawString("EAU", (int) (offset*3.5 +TAILLE), positionY-offset);
@@ -125,7 +126,7 @@ class VueGrille extends JPanel implements Observer {
 
     private void paintActionsRestantes(Graphics g, int compteur){
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, 25*TAILLE, 25*TAILLE);
+        g.fillRect(0, 0, (Ile.LARGEUR +5)*TAILLE, (Ile.HAUTEUR + 5)*TAILLE);
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE-offset));
         g.drawString(this.ile.getJoueurActuel().toString() +" : " + (3 - compteur) + " actions restantes" , 0, TAILLE*21);
@@ -153,6 +154,24 @@ class VueGrille extends JPanel implements Observer {
             g.drawString("H", x+offset + TAILLE*4/30, y+offset + TAILLE*21/30);
             g.setColor(Color.WHITE);
             g.drawString("H", x+offset + 2*TAILLE/30, (y+offset + 19*TAILLE/30));
+        }
+        switch (z.getArtefact()){
+            case TERRE:
+                g.setColor(Color.RED.darker());
+                g.fillOval(x+offset, y+offset, TAILLE/2-offset, TAILLE/2 -offset);
+                break;
+            case EAU:
+                g.setColor(Color.BLUE.brighter());
+                g.fillOval(x+offset, y+offset, TAILLE/2-offset, TAILLE/2 -offset);
+                break;
+            case FEU:
+                g.setColor(Color.YELLOW);
+                g.fillOval(x+offset, y+offset, TAILLE/2-offset, TAILLE/2 -offset);
+                break;
+            case AIR:
+                g.setColor(Color.LIGHT_GRAY.brighter());
+                g.fillOval(x+offset, y+offset, TAILLE/2-offset, TAILLE/2 -offset);
+                break;
         }
     }
 }

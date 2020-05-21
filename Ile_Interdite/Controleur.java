@@ -51,6 +51,25 @@ class ControleurAss extends Controleur{
     }
 }
 
+class ControleurArtefact extends Controleur{
+
+    public ControleurArtefact(Ile ile) {
+        super(ile);
+    }
+
+    @Override
+    public void action() {
+        System.out.println("Bouton fonctionne");
+        if(this.ile.compteur < 3 && this.ile.getJoueurActuel().prendreArtefact()) {
+            this.ile.compteur += 1;
+        }
+    }
+
+    public void actionPerformed(ActionEvent actionEvent) {
+        this.action();
+    }
+}
+
 class ControleurDirection implements ActionListener {
     Ile ile;
     Direction direction;

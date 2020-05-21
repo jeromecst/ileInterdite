@@ -29,12 +29,14 @@ class VueCommandes extends JPanel {
         JButton boutonBas = new JButton("v");
         JButton boutonFDT = new JButton("fin de tour");
         JButton boutonAss = new JButton("assécher");
+        JButton boutonArte = new JButton("prendre artéfact");
         this.add(boutonGauche);
         this.add(boutonDroite);
         this.add(boutonHaut);
         this.add(boutonBas);
         this.add(boutonFDT);
         this.add(boutonAss);
+        this.add(boutonArte);
         /*
           Le bouton, lorsqu'il est cliqué par l'utilisateur, produit un
           événement, de classe [ActionEvent].
@@ -63,6 +65,7 @@ class VueCommandes extends JPanel {
         ControleurDirection ctrlBas = new ControleurDirection(ile, Direction.BAS);
         Controleur ctrl5 = new Controleur(ile);
         ControleurAss ctrlAss = new ControleurAss(ile);
+        ControleurArtefact crtlArte = new ControleurArtefact(ile);
         /* Enregistrement du contrôleur comme auditeur du bouton. */
         boutonDroite.addActionListener(ctrlDroite);
         boutonBas.addActionListener(ctrlBas);
@@ -70,5 +73,6 @@ class VueCommandes extends JPanel {
         boutonGauche.addActionListener(ctrlGauche);
         boutonFDT.addActionListener(ctrl5);
         boutonAss.addActionListener(ctrlAss);
+        boutonArte.addActionListener(crtlArte);
     }
 }
