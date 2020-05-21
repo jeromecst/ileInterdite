@@ -1,6 +1,9 @@
 package Ile_Interdite;
 
+import java.util.ArrayList;
+
 public class Joueur {
+    private ArrayList<Clef> clefs;
     private final Ile ile;
     int x;
     int y;
@@ -11,6 +14,11 @@ public class Joueur {
         this.y = y;
         this.ile = ile;
         this.name = s;
+        this.clefs = new ArrayList<>();
+    }
+
+    void ajouteClefs(Clef clef){
+        this.clefs.add(clef);
     }
 
     boolean canMove(int x, int y) {

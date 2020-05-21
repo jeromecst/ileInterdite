@@ -55,7 +55,7 @@ class VueGrille extends JPanel implements Observer {
         /* Pour chaque cellule... */
         paintActionsRestantes(g, this.ile.compteur);
         for(int i=0; i<=Ile.LARGEUR; i++) {
-            for(int j=0; j<=Ile.HAUTEUR; j++) {
+            for(int j=0; j<=Ile.HAUTEUR -1; j++) {
                 /*
                   ... Appeler une fonction d'affichage auxiliaire.
                   On lui fournit les informations de dessin [g] et les
@@ -64,7 +64,7 @@ class VueGrille extends JPanel implements Observer {
                 paint(g, ile.getZone(i, j), (i)*TAILLE, (j)*TAILLE);
             }
         }
-        paintPlayer(g, ile.joueur);
+        paintPlayers(g);
     }
     /*
       Fonction auxiliaire de dessin d'une cellule.
@@ -75,12 +75,12 @@ class VueGrille extends JPanel implements Observer {
      */
     private void paintActionsRestantes(Graphics g, int compteur){
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, 22*TAILLE, 22*TAILLE);
+        g.fillRect(0, 0, 25*TAILLE, 25*TAILLE);
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.BOLD, 20));
-        g.drawString(this.ile.getJoueurActuel().toString() +" : " + (3 - compteur) + " actions restantes" , 0, TAILLE*22);
+        g.drawString(this.ile.getJoueurActuel().toString() +" : " + (3 - compteur) + " actions restantes" , 0, TAILLE*21);
     }
-    private void paintPlayer(Graphics g, Joueur[] j){
+    private void paintPlayers(Graphics g){
         int offset = 7;
         for(int i = 0; i < this.ile.nbJoueurs; i++){
             int x = this.ile.getJoueur(i).x*TAILLE;
@@ -91,7 +91,6 @@ class VueGrille extends JPanel implements Observer {
     }
     private void paint(Graphics g, Zone z, int x, int y) {
         int offset = 7;
-        /* Sélection d'une couleur. */
         g.setColor(Color.BLUE.darker());
         g.fillRect(x, y, TAILLE, TAILLE);
         switch (z.getEtat()){
