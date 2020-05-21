@@ -54,7 +54,7 @@ class VueGrille extends JPanel implements Observer {
     public void paintComponent(Graphics g) {
         super.repaint();
         /* Pour chaque cellule... */
-        //paintActionsRestantes(g, this.ile.compteur);
+        paintActionsRestantes(g, this.ile.compteur);
         paintGrille(g);
         paintClefs(g);
         paintArte(g);
@@ -69,6 +69,20 @@ class VueGrille extends JPanel implements Observer {
             }
         }
         paintPlayers(g);
+        if(this.ile.isLost){
+            paintMessage(g, "YOU LOSE");
+        }
+        if(this.ile.isWin){
+            paintMessage(g, "YOU WIN");
+        }
+    }
+
+    private void paintMessage(Graphics g, String msg) {
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, TAILLE*Ile.LARGEUR*10, TAILLE*Ile.HAUTEUR*10);
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE));
+        g.drawString(msg,(int)( TAILLE*Ile.LARGEUR/4.), (int)( TAILLE*Ile.HAUTEUR/2.) );
     }
 
     private void paintGrille(Graphics g) {
@@ -92,7 +106,7 @@ class VueGrille extends JPanel implements Observer {
     }
 
     private void paintClefsJoueur(Graphics g, Joueur j){
-        int beginningY = TAILLE*(Ile.HAUTEUR) + 3*offset;
+        int beginningY = (int) (TAILLE*(Ile.HAUTEUR + 1./2.) + 3*offset);
         int beginningX = 2*offset;
         int beginningXAfterText = beginningX + TAILLE*2;
         int beginningXFontAfterText = beginningXAfterText + offset/4;
@@ -135,7 +149,6 @@ class VueGrille extends JPanel implements Observer {
                     g.drawString("AIR", (int) (beginningXFontAfterText*1.6), positionYtext);
                     break;
             }
-
         }
     }
     private void paintArte(Graphics g){
@@ -147,7 +160,7 @@ class VueGrille extends JPanel implements Observer {
     }
 
     private void paintArteJouerurs(Graphics g, Joueur j){
-        int beginningY = (int) (TAILLE*(Ile.HAUTEUR +1./2.) + 3*offset);
+        int beginningY = (int) (TAILLE*(Ile.HAUTEUR +1) + 3*offset);
         int beginningX = 2*offset;
         int beginningXAfterText = beginningX + TAILLE*2;
         int beginningXFontAfterText = beginningXAfterText + offset/4;
@@ -195,11 +208,12 @@ class VueGrille extends JPanel implements Observer {
     }
 
     private void paintActionsRestantes(Graphics g, int compteur){
+        int beginningY = (TAILLE*(Ile.HAUTEUR ) + 3*offset);
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, (Ile.LARGEUR +5)*TAILLE, (Ile.HAUTEUR + 5)*TAILLE);
         g.setColor(Color.BLACK);
-        g.setFont(new Font("TimesRoman", Font.BOLD, (int) (TAILLE/1.4-offset)));
-        g.drawString(this.ile.getJoueurActuel().toString() +" : " + (3 - compteur) + " actions restantes" , 0, TAILLE*(Ile.HAUTEUR + 1));
+        g.setFont(new Font("TimesRoman", Font.BOLD, (int) (TAILLE/2.5)));
+        g.drawString(this.ile.getJoueurActuel().toString() +" : " + (3 - compteur) + " actions restantes" , offset, beginningY);
     }
     private void paintPlayers(Graphics g){
         for(int i = 0; i < this.ile.nbJoueurs; i++){

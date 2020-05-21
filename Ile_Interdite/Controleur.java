@@ -16,6 +16,11 @@ class Controleur implements ActionListener{
        this.ile.joueurActuel%=this.ile.nbJoueurs;
        this.ile.modeAssecher = false;
        this.ile.ajouteCleeAleatoireJoueurActuel();
+       switch (this.ile.testend()){
+           case WIN: this.ile.isWin = true; break;
+           case LOSE: this.ile.isLost = true; break;
+           case NONE: break;
+       }
    }
 
     public void actionPerformed(ActionEvent actionEvent) {

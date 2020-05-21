@@ -20,3 +20,9 @@ enum Direction{
     GAUCHE,
     DROITE
 }
+
+enum Fin{
+    WIN,
+    LOSE,
+    NONE
+}

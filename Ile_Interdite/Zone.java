@@ -7,11 +7,11 @@ package Ile_Interdite;
  */
 class Zone {
     /** On conserve un pointeur vers la classe principale du modèle. */
+    final int x, y;
     private final Ile ile;
     private Etat etat;
     private Element element;
     private boolean helico;
-    private final int x, y;
     private double chanceClef = 0;
     private Element artefact = Element.AUCUN;
 

@@ -20,12 +20,6 @@ public class Joueur {
         this.clefs = new ArrayList<>();
         this.artefacts = new ArrayList<>();
         this.num = n;
-        //TODO DELETE THAT TEST
-        this.clefs.add(new Clef(Element.EAU));
-        this.clefs.add(new Clef(Element.AIR));
-        this.clefs.add(new Clef(Element.FEU));
-        this.clefs.add(new Clef(Element.TERRE));
-        this.artefacts.add(Element.EAU);
 
     }
 

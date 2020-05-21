@@ -20,6 +20,12 @@ class Ile extends Observable {
     public int compteur = 0;
     // Etat dans lequel les boutons permettent d'assecher une zone adjacente
     boolean modeAssecher = false;
+    //Zone helicoptère
+    private Zone helico;
+    //Zones artefacts
+    private Zone[] zoneArte = new Zone[4];
+    boolean isWin = false;
+    boolean isLost = false;
 
     /**
      * Constructeur, rempli la grille de zones aléatoires
@@ -46,6 +52,7 @@ class Ile extends Observable {
             x = rd.nextInt(LARGEUR);
             y = rd.nextInt(HAUTEUR);
             if(this.getZone(x, y).setArtefacts(arts[i])){
+                this.zoneArte[i] = this.getZone(x, y);
                 i--;
             }
         }
@@ -116,6 +123,7 @@ class Ile extends Observable {
         for(int i = 0; i < nbJoueurs; i++){
             this.joueur[i] = new Joueur(this, x, y, "J" + i, i);
         }
+        this.helico = this.zones[x][y];
     }
 
     /**
@@ -159,5 +167,44 @@ class Ile extends Observable {
      */
     public Zone getZone(int x, int y) {
         return zones[x][y];
+    }
+
+
+    public Fin testend(){
+        if(this.allArtefacts() && allHeliport()){
+            return Fin.WIN;
+        }
+        if(this.helico.estSubmerge() || zoneArtefactSubmergee()){
+            return Fin.LOSE;
+        }
+        return Fin.NONE;
+    }
+
+    private boolean allArtefacts(){
+        int compteur = 0;
+        for(Joueur j: this.joueur){
+            for(Element ignored : j.getAllArtefacts()){
+                compteur += 1;
+            }
+        }
+        return compteur == 4;
+    }
+
+    private boolean zoneArtefactSubmergee(){
+        for(Zone z: this.zoneArte){
+            if(z.estSubmerge()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean allHeliport(){
+        for(Joueur j: this.joueur){
+            if(j.x != this.helico.x || j.y != this.helico.y){
+                return false;
+            }
+        }
+        return true;
     }
 }
