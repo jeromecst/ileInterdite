@@ -14,6 +14,8 @@ class Ile extends Observable {
     public int joueurActuel = 0;
     private final Random rd = new Random();
     public int compteur = 0;
+    // Etat dans lequel les boutons permettent d'assecher une zone adjacente
+    boolean assecher = false;
 
     /* Construction : on initialise un tableau de zones. */
     public Ile() {

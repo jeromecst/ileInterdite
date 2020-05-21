@@ -33,10 +33,6 @@ class Zone {
         return this.element;
     }
 
-    boolean isSubmergee(){
-        return this.etat == Etat.SUBMERGEE;
-    }
-
     void innonde(){
         switch (this.etat){
             case NORMAL:

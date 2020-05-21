@@ -20,6 +20,28 @@ class Controleur implements ActionListener{
        this.action();
     }
 }
+
+class ControleurAss extends Controleur{
+
+    public ControleurAss(Ile ile) {
+        super(ile);
+    }
+
+    @Override
+    public void action() {
+        if(this.ile.getJoueurActuel().getZone().getEtat() == Etat.INNONDEE){
+            this.ile.getJoueurActuel().getZone().asseche();
+        }
+        else{
+            this.ile.assecher = true;
+        }
+    }
+
+    public void actionPerformed(ActionEvent actionEvent) {
+        this.action();
+    }
+}
+
 class ControleurDirection implements ActionListener {
     /**
      * On garde un pointeur vers le modèle, car le contrôleur doit

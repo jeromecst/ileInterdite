@@ -28,11 +28,13 @@ class VueCommandes extends JPanel {
         JButton boutonHaut = new JButton("^");
         JButton boutonBas = new JButton("v");
         JButton boutonFDT = new JButton("fin de tour");
+        JButton boutonAss = new JButton("assécher");
         this.add(boutonGauche);
         this.add(boutonDroite);
         this.add(boutonHaut);
         this.add(boutonBas);
         this.add(boutonFDT);
+        this.add(boutonAss);
         /*
           Le bouton, lorsqu'il est cliqué par l'utilisateur, produit un
           événement, de classe [ActionEvent].
