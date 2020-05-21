@@ -20,11 +20,17 @@ public class Joueur {
         this.clefs = new ArrayList<>();
         this.artefacts = new ArrayList<>();
         this.num = n;
+        //TODO DELETE THAT TEST
+        this.clefs.add(new Clef(Element.EAU));
+        this.clefs.add(new Clef(Element.AIR));
+        this.clefs.add(new Clef(Element.FEU));
+        this.clefs.add(new Clef(Element.TERRE));
+        this.artefacts.add(Element.EAU);
+
     }
 
     boolean prendreArtefact(){
         if(artefactMatchKey()){
-            System.out.println("Artefact Match key !!");
             this.artefacts.add(this.getZone().getArtefact());
             this.getZone().removeArtefact();
             return true;
@@ -47,6 +53,10 @@ public class Joueur {
 
     public List<Clef> getAllKeys(){
         return this.clefs;
+    }
+
+    public ArrayList<Element> getAllArtefacts(){
+        return  this.artefacts;
     }
 
     boolean hasKey(Clef clef){

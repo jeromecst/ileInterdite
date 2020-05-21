@@ -10,7 +10,7 @@ class Ile extends Observable {
     // On stocke un tableau de zones.
     private final Zone[][] zones;
     // Nombre de joueurs
-    public final int nbJoueurs = 2;
+    public final int nbJoueurs = 4;
     // Tableau du nombre de joueurs
     Joueur[] joueur = new Joueur[nbJoueurs];
     // Int qui reconnait le joueur actuel, valeur comprise entre 0 et nbJoueurs - 1

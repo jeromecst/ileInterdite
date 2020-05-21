@@ -16,7 +16,7 @@ class VueGrille extends JPanel implements Observer {
     /* On maintient une référence vers le modèle. */
     private final Ile ile;
     /* Définition d'une taille (en pixels) pour l'affichage des zones. */
-    private final static int TAILLE = 50;
+    private final static int TAILLE = 60;
     private final static int offset = ((int) (TAILLE*7./30.));
     Color[] colorList = {Color.RED, Color.BLUE, Color.GREEN, Color.CYAN.brighter()};
 
@@ -30,7 +30,7 @@ class VueGrille extends JPanel implements Observer {
           l'interface, calculée en fonction du nombre de zones et de la
           taille d'affichage.
          */
-        Dimension dim = new Dimension(TAILLE*Ile.LARGEUR,
+        Dimension dim = new Dimension(TAILLE*Ile.LARGEUR + 39*this.ile.joueur.length,
                 TAILLE*(Ile.HAUTEUR + 2*this.ile.joueur.length));
         this.setPreferredSize(dim);
     }
@@ -54,10 +54,12 @@ class VueGrille extends JPanel implements Observer {
     public void paintComponent(Graphics g) {
         super.repaint();
         /* Pour chaque cellule... */
-        paintActionsRestantes(g, this.ile.compteur);
+        //paintActionsRestantes(g, this.ile.compteur);
+        paintGrille(g);
         paintClefs(g);
-        for(int i=0; i<=Ile.LARGEUR; i++) {
-            for(int j=0; j<=Ile.HAUTEUR -1; j++) {
+        paintArte(g);
+        for(int i=0; i<=Ile.LARGEUR-1; i++) {
+            for(int j=0; j<=Ile.HAUTEUR-1; j++) {
                 /*
                   ... Appeler une fonction d'affichage auxiliaire.
                   On lui fournit les informations de dessin [g] et les
@@ -68,6 +70,12 @@ class VueGrille extends JPanel implements Observer {
         }
         paintPlayers(g);
     }
+
+    private void paintGrille(Graphics g) {
+        g.setColor(Color.BLUE.darker());
+        g.fillRect(0, 0, TAILLE*Ile.HAUTEUR + offset, TAILLE*Ile.LARGEUR +offset);
+    }
+
     /*
       Fonction auxiliaire de dessin d'une cellule.
       Ici, la classe [Zone] ne peut être désignée que par l'intermédiaire
@@ -83,41 +91,103 @@ class VueGrille extends JPanel implements Observer {
         }
     }
 
-    //TODO optimiser
     private void paintClefsJoueur(Graphics g, Joueur j){
-        int positionY = TAILLE*(Ile.HAUTEUR + j.getNum() + 1);
-        g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE-offset));
+        int beginningY = TAILLE*(Ile.HAUTEUR) + 3*offset;
+        int beginningX = 2*offset;
+        int beginningXAfterText = beginningX + TAILLE*2;
+        int beginningXFontAfterText = beginningXAfterText + offset/4;
+        int positionY = beginningY + TAILLE*j.getNum();
+        int positionYBoule = positionY - 2*offset;
+        int positionYtext = (int)(positionYBoule + 1.4*offset);
+        int tailleBoule = TAILLE/2;
+        int tailleFont = TAILLE/6;
+        g.setFont(new Font("TimesRoman", Font.BOLD, (int) (TAILLE/2)));
         g.setColor(Color.BLACK);
-        g.drawString(j.toString() +" : ", 1, positionY);
+        g.drawString(j.toString() +" clefs : ", 1, positionY);
         for(Clef c: j.getAllKeys()){
             switch (c.getType()){
                 case EAU:
                     g.setColor(Color.BLUE);
-                    g.fillOval(offset*3 + TAILLE, positionY-offset*4, TAILLE , TAILLE);
+                    g.fillOval(beginningXAfterText, positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.WHITE);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/3));
-                    g.drawString("EAU", (int) (offset*3.5 +TAILLE), positionY-offset);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
+                    g.drawString("EAU", beginningXFontAfterText, positionYtext);
                     break;
                 case TERRE:
                     g.setColor(Color.RED.darker());
-                    g.fillOval(offset*3 + TAILLE*2, positionY-offset*4, TAILLE , TAILLE);
+                    g.fillOval((int) (beginningXAfterText*1.2), positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.WHITE);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, (int) (TAILLE/3.5)));
-                    g.drawString("TERRE", (int) (offset*3.5 +TAILLE*2), positionY-offset);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
+                    g.drawString("TER", (int) (beginningXFontAfterText*1.2), positionYtext);
                     break;
                 case FEU:
                     g.setColor(Color.YELLOW);
-                    g.fillOval(offset*3 + TAILLE*3, positionY-offset*4, TAILLE , TAILLE);
+                    g.fillOval((int) (beginningXAfterText*1.4), positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.BLACK);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/3));
-                    g.drawString("FEU", (int) (offset*3.5 +TAILLE*3), positionY-offset);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
+                    g.drawString("FEU", (int) (beginningXFontAfterText*1.4), positionYtext);
                     break;
                 case AIR:
-                    g.setColor(Color.LIGHT_GRAY);
-                    g.fillOval(offset*3 + TAILLE*4, positionY-offset*4, TAILLE , TAILLE);
+                    g.setColor(Color.GRAY);
+                    g.fillOval((int) (beginningXAfterText*1.6), positionYBoule, tailleBoule, tailleBoule);
+                    g.setColor(Color.WHITE);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
+                    g.drawString("AIR", (int) (beginningXFontAfterText*1.6), positionYtext);
+                    break;
+            }
+
+        }
+    }
+    private void paintArte(Graphics g){
+        for(Joueur j: ile.joueur){
+            if(j.hasKey()){
+                paintArteJouerurs(g, j);
+            }
+        }
+    }
+
+    private void paintArteJouerurs(Graphics g, Joueur j){
+        int beginningY = (int) (TAILLE*(Ile.HAUTEUR +1./2.) + 3*offset);
+        int beginningX = 2*offset;
+        int beginningXAfterText = beginningX + TAILLE*2;
+        int beginningXFontAfterText = beginningXAfterText + offset/4;
+        int positionY = beginningY + TAILLE*j.getNum();
+        int positionYBoule = positionY - 2*offset;
+        int positionYtext = (int)(positionYBoule + 1.4*offset);
+        int tailleBoule = TAILLE/2;
+        int tailleFont = TAILLE/6;
+        g.setFont(new Font("TimesRoman", Font.BOLD, (int) (TAILLE/2)));
+        g.setColor(Color.BLACK);
+        g.drawString("     arts : ", 1, positionY);
+        for(Element e: j.getAllArtefacts()){
+            switch (e){
+                case EAU:
+                    g.setColor(Color.BLUE);
+                    g.fillOval(beginningXAfterText, positionYBoule, tailleBoule, tailleBoule);
+                    g.setColor(Color.WHITE);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
+                    g.drawString("EAU", beginningXFontAfterText, positionYtext);
+                    break;
+                case TERRE:
+                    g.setColor(Color.RED.darker());
+                    g.fillOval((int) (beginningXAfterText*1.2), positionYBoule, tailleBoule, tailleBoule);
+                    g.setColor(Color.WHITE);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
+                    g.drawString("TER", (int) (beginningXFontAfterText*1.2), positionYtext);
+                    break;
+                case FEU:
+                    g.setColor(Color.YELLOW);
+                    g.fillOval((int) (beginningXAfterText*1.4), positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.BLACK);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/3));
-                    g.drawString("AIR", (int) (offset*3.5 +TAILLE*4), positionY-offset);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
+                    g.drawString("FEU", (int) (beginningXFontAfterText*1.4), positionYtext);
+                    break;
+                case AIR:
+                    g.setColor(Color.GRAY);
+                    g.fillOval((int) (beginningXAfterText*1.6), positionYBoule, tailleBoule, tailleBoule);
+                    g.setColor(Color.WHITE);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
+                    g.drawString("AIR", (int) (beginningXFontAfterText*1.6), positionYtext);
                     break;
             }
 
@@ -128,13 +198,16 @@ class VueGrille extends JPanel implements Observer {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, (Ile.LARGEUR +5)*TAILLE, (Ile.HAUTEUR + 5)*TAILLE);
         g.setColor(Color.BLACK);
-        g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE-offset));
-        g.drawString(this.ile.getJoueurActuel().toString() +" : " + (3 - compteur) + " actions restantes" , 0, TAILLE*21);
+        g.setFont(new Font("TimesRoman", Font.BOLD, (int) (TAILLE/1.4-offset)));
+        g.drawString(this.ile.getJoueurActuel().toString() +" : " + (3 - compteur) + " actions restantes" , 0, TAILLE*(Ile.HAUTEUR + 1));
     }
     private void paintPlayers(Graphics g){
         for(int i = 0; i < this.ile.nbJoueurs; i++){
             int x = this.ile.getJoueur(i).x*TAILLE;
             int y = this.ile.getJoueur(i).y*TAILLE;
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/2-offset));
+            g.drawString(this.ile.getJoueur(i).toString(), x+offset, y+offset);
             g.setColor(colorList[i]);
             g.fillOval(x+offset, y+offset, TAILLE- offset, TAILLE -offset);
         }
