@@ -18,6 +18,8 @@ class Ile extends Observable {
     private final Random rd = new Random();
     // Compteur qui compte le nombre d'actions du joueurs actuel
     public int compteur = 0;
+    // Etat dans lequel les boutons permettent d'assecher une zone adjacente
+    boolean modeAssecher = false;
 
     /**
      * Constructeur, rempli la grille de zones aléatoires
@@ -51,6 +53,35 @@ class Ile extends Observable {
                 case 3: z.setElem(Element.FEU); break;
             }
         }
+    }
+
+    public boolean zoneAdjacenteInnondee(){
+        int x = this.getJoueurActuel().x;
+        int y = this.getJoueurActuel().y;
+        return (estInondee(x, y-1)
+                || estInondee(x, y+1)
+                || estInondee(x-1, y)
+                || estInondee(x+1, y))
+                ;
+    }
+
+    private boolean estInondee(int x, int y){
+        if(x > LARGEUR || y>HAUTEUR || x<0 || y<0){
+            return false;
+        }
+        return this.getZone(x, y).getEtat() == Etat.INNONDEE;
+    }
+
+    public boolean asseche(Direction direction){
+        int x = this.getJoueurActuel().x;
+        int y = this.getJoueurActuel().y;
+        switch (direction){
+            case BAS: return this.getZone(x, y+1).asseche();
+            case HAUT: return this.getZone(x, y-1).asseche();
+            case GAUCHE: return this.getZone(x-1, y).asseche();
+            case DROITE: return this.getZone(x+1, y).asseche();
+        }
+        return false;
     }
 
     private void setHelico() {

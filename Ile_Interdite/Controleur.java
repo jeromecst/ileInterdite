@@ -20,15 +20,36 @@ class Controleur implements ActionListener{
        this.action();
     }
 }
+
+class ControleurAss extends Controleur{
+
+    public ControleurAss(Ile ile) {
+        super(ile);
+    }
+
+    @Override
+    public void action() {
+        if(this.ile.compteur < 3) {
+            if (this.ile.getJoueurActuel().getZone().getEtat() == Etat.INNONDEE) {
+                this.ile.getJoueurActuel().getZone().asseche();
+                this.ile.compteur += 1;
+            } else if (this.ile.zoneAdjacenteInnondee()) {
+                this.ile.modeAssecher = true;
+            } else {
+                System.out.println("Il n'y a pas de zones à assécher !");
+            }
+        }
+        else {
+            System.out.println("Fin du tour");
+        }
+    }
+
+    public void actionPerformed(ActionEvent actionEvent) {
+        this.action();
+    }
+}
+
 class ControleurDirection implements ActionListener {
-    /**
-     * On garde un pointeur vers le modèle, car le contrôleur doit
-     * provoquer un appel de méthode du modèle.
-     * Remarque : comme cette classe est interne, cette inscription
-     * explicite du modèle est inutile. On pourrait se contenter de
-     * faire directement référence au modèle enregistré pour la classe
-     * englobante [VueCommandes].
-     */
     Ile ile;
     Direction direction;
     public ControleurDirection(Ile ile, Direction direction) {
@@ -40,8 +61,15 @@ class ControleurDirection implements ActionListener {
     On sépare actionPerformed et action pour pouvoir récupérer cette méthode pour le clavier
      */
     public void action(){
-        if(this.ile.compteur < 3 && ile.getJoueurActuel().move(this.direction)) {
+        if(this.ile.compteur < 3 && this.ile.modeAssecher && this.ile.asseche(this.direction)){
             this.ile.compteur += 1;
+            this.ile.modeAssecher = false;
+        }
+        else if(this.ile.compteur < 3 && ile.getJoueurActuel().move(this.direction)) {
+                this.ile.compteur += 1;
+        }
+        else {
+            System.out.println("Fin du tour");
         }
     }
 

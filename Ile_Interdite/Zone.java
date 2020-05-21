@@ -33,10 +33,6 @@ class Zone {
         return this.element;
     }
 
-    boolean isSubmergee(){
-        return this.etat == Etat.SUBMERGEE;
-    }
-
     void innonde(){
         switch (this.etat){
             case NORMAL:
@@ -59,10 +55,12 @@ class Zone {
         return this.helico;
     }
 
-    void asseche(){
+    boolean asseche(){
         if(this.etat == Etat.INNONDEE){
             this.etat = Etat.NORMAL;
+            return true;
         }
+        return false;
     }
 
     boolean estSubmerge(){

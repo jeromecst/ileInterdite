@@ -14,12 +14,16 @@ public class Joueur {
     }
 
     boolean canMove(int x, int y) {
-        if (x < 0 || y < 0 || x >= Ile.LARGEUR  || y >= Ile.HAUTEUR || ile.getZone(x,y).isSubmergee()){
+        if (x < 0 || y < 0 || x >= Ile.LARGEUR  || y >= Ile.HAUTEUR || ile.getZone(x,y).estSubmerge()){
             return false;
         }
         this.x = x;
         this.y = y;
         return true;
+    }
+
+    public Zone getZone(){
+        return this.ile.getZone(this.x, this.y);
     }
 
     @Override
