@@ -1,6 +1,7 @@
 package Ile_Interdite;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Joueur {
     private ArrayList<Clef> clefs;
@@ -8,13 +9,23 @@ public class Joueur {
     int x;
     int y;
     private String name;
+    private int num;
 
-    public Joueur(Ile ile, int x, int y, String s){
+    public Joueur(Ile ile, int x, int y, String s, int n){
         this.x = x;
         this.y = y;
         this.ile = ile;
         this.name = s;
         this.clefs = new ArrayList<>();
+        this.num = n;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public List<Clef> getAllKeys(){
+        return this.clefs;
     }
 
     boolean hasKey(Clef clef){
@@ -23,6 +34,9 @@ public class Joueur {
                 return true;
         }
         return false;
+    }
+    boolean hasKey(){
+        return this.clefs.size() > 0;
     }
 
     void ajouteClefs(Clef clef){

@@ -31,7 +31,7 @@ class VueGrille extends JPanel implements Observer {
           taille d'affichage.
          */
         Dimension dim = new Dimension(TAILLE*Ile.LARGEUR,
-                TAILLE*(Ile.HAUTEUR + 3));
+                TAILLE*(Ile.HAUTEUR + 2*this.ile.joueur.length));
         this.setPreferredSize(dim);
     }
 
@@ -55,6 +55,7 @@ class VueGrille extends JPanel implements Observer {
         super.repaint();
         /* Pour chaque cellule... */
         paintActionsRestantes(g, this.ile.compteur);
+        paintClefs(g);
         for(int i=0; i<=Ile.LARGEUR; i++) {
             for(int j=0; j<=Ile.HAUTEUR -1; j++) {
                 /*
@@ -74,6 +75,54 @@ class VueGrille extends JPanel implements Observer {
       [Ile.Zone].
       Ceci serait impossible si [Zone] était déclarée privée dans [Ile].
      */
+    private void paintClefs(Graphics g){
+        for(Joueur j: ile.joueur){
+            if(j.hasKey()){
+                paintClefsJoueur(g, j);
+            }
+        }
+    }
+
+    private void paintClefsJoueur(Graphics g, Joueur j){
+        int positionY = TAILLE*(22 + j.getNum());
+        g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE-offset));
+        g.setColor(Color.BLACK);
+        g.drawString(j.toString() +" : ", 0, positionY);
+        for(Clef c: j.getAllKeys()){
+            switch (c.type){
+                case EAU:
+                    g.setColor(Color.BLUE);
+                    g.fillOval(offset*3 + TAILLE*1, positionY-offset*4, TAILLE , TAILLE);
+                    g.setColor(Color.WHITE);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/3));
+                    g.drawString("EAU", (int) (offset*3.5 +TAILLE), positionY-offset);
+                    break;
+                case TERRE:
+                    g.setColor(Color.RED.darker());
+                    g.fillOval(offset*3 + TAILLE*2, positionY-offset*4, TAILLE , TAILLE);
+                    g.setColor(Color.WHITE);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, (int) (TAILLE/3.5)));
+                    g.drawString("TERRE", (int) (offset*3.5 +TAILLE*2), positionY-offset);
+                    break;
+                case FEU:
+                    g.setColor(Color.YELLOW);
+                    g.fillOval(offset*3 + TAILLE*3, positionY-offset*4, TAILLE , TAILLE);
+                    g.setColor(Color.BLACK);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/3));
+                    g.drawString("FEU", (int) (offset*3.5 +TAILLE*3), positionY-offset);
+                    break;
+                case AIR:
+                    g.setColor(Color.LIGHT_GRAY);
+                    g.fillOval(offset*3 + TAILLE*4, positionY-offset*4, TAILLE , TAILLE);
+                    g.setColor(Color.BLACK);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/3));
+                    g.drawString("AIR", (int) (offset*3.5 +TAILLE*4), positionY-offset);
+                    break;
+            }
+
+        }
+    }
+
     private void paintActionsRestantes(Graphics g, int compteur){
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 25*TAILLE, 25*TAILLE);
@@ -99,10 +148,11 @@ class VueGrille extends JPanel implements Observer {
         }
         g.fillRect(x + offset, y + offset, TAILLE - offset, TAILLE  - offset);
         if(z.isHelico()){
+            g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE-offset));
             g.setColor(Color.BLACK);
-            g.drawString("H", x+offset + 4, y+offset + 21);
+            g.drawString("H", x+offset + TAILLE*4/30, y+offset + TAILLE*21/30);
             g.setColor(Color.WHITE);
-            g.drawString("H", x+offset + 2, y+offset + 19);
+            g.drawString("H", x+offset + 2*TAILLE/30, (y+offset + 19*TAILLE/30));
         }
     }
 }

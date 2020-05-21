@@ -36,7 +36,6 @@ class Zone {
 
     /**
      * Permet d'attribuer un élément à une zone
-     * @param z une zone
      */
     private void setElem(){
         double pourcent = this.ile.rd.nextDouble();

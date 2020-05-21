@@ -6,11 +6,11 @@ class Ile extends Observable {
     // On fixe la taille de la grille.
     public static final int HAUTEUR=20, LARGEUR=20;
     // On fixe le pourcentage de zones associées à un élément.
-    public static final double SPECIAL=.6;
+    public static final double SPECIAL=.9;
     // On stocke un tableau de zones.
     private final Zone[][] zones;
     // Nombre de joueurs
-    public final int nbJoueurs = 2;
+    public final int nbJoueurs = 4;
     // Tableau du nombre de joueurs
     Joueur[] joueur = new Joueur[nbJoueurs];
     // Int qui reconnait le joueur actuel, valeur comprise entre 0 et nbJoueurs - 1
@@ -104,7 +104,7 @@ class Ile extends Observable {
         int y = this.rd.nextInt(HAUTEUR);
         this.zones[x][y].setHelico();
         for(int i = 0; i < nbJoueurs; i++){
-            this.joueur[i] = new Joueur(this, x, y, "J" + i);
+            this.joueur[i] = new Joueur(this, x, y, "J" + i, i);
         }
     }
 
