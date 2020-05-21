@@ -17,6 +17,14 @@ public class Joueur {
         this.clefs = new ArrayList<>();
     }
 
+    boolean hasKey(Clef clef){
+        for(Clef c: this.clefs){
+            if (c.type == clef.type)
+                return true;
+        }
+        return false;
+    }
+
     void ajouteClefs(Clef clef){
         this.clefs.add(clef);
     }

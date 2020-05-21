@@ -41,7 +41,7 @@ class Ile extends Observable {
     public boolean ajouteCleeAleatoireJoueurActuel(){
         double chance  = this.getJoueurActuel().getZone().getChanceClef();
         Element elem = this.getJoueurActuel().getZone().getElement();
-        if(this.rd.nextDouble() < chance && elem != Element.AUCUN){
+        if(this.rd.nextDouble() < chance && elem != Element.AUCUN && ! this.getJoueurActuel().hasKey(new Clef(elem))){
             this.getJoueurActuel().ajouteClefs(new Clef(elem));
             System.out.println(this.getJoueurActuel().toString() + " trouve une clé de type " + elem.toString());
             return true;

@@ -17,6 +17,7 @@ class VueGrille extends JPanel implements Observer {
     private final Ile ile;
     /* Définition d'une taille (en pixels) pour l'affichage des zones. */
     private final static int TAILLE = 30;
+    private final static int offset = ((int) (TAILLE*7./30.));
     Color[] colorList = {Color.RED, Color.BLUE, Color.GREEN, Color.CYAN.brighter()};
 
     /* Constructeur. */
@@ -77,11 +78,10 @@ class VueGrille extends JPanel implements Observer {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 25*TAILLE, 25*TAILLE);
         g.setColor(Color.BLACK);
-        g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE-offset));
         g.drawString(this.ile.getJoueurActuel().toString() +" : " + (3 - compteur) + " actions restantes" , 0, TAILLE*21);
     }
     private void paintPlayers(Graphics g){
-        int offset = 7;
         for(int i = 0; i < this.ile.nbJoueurs; i++){
             int x = this.ile.getJoueur(i).x*TAILLE;
             int y = this.ile.getJoueur(i).y*TAILLE;
@@ -90,7 +90,6 @@ class VueGrille extends JPanel implements Observer {
         }
     }
     private void paint(Graphics g, Zone z, int x, int y) {
-        int offset = 7;
         g.setColor(Color.BLUE.darker());
         g.fillRect(x, y, TAILLE, TAILLE);
         switch (z.getEtat()){
