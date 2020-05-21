@@ -4,11 +4,13 @@ public class Joueur {
     private final Ile ile;
     int x;
     int y;
+    private String name;
 
-    public Joueur(Ile ile, int x, int y){
+    public Joueur(Ile ile, int x, int y, String s){
         this.x = x;
         this.y = y;
         this.ile = ile;
+        this.name = s;
     }
 
     boolean canMove(int x, int y) {
@@ -18,6 +20,11 @@ public class Joueur {
         this.x = x;
         this.y = y;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 
     boolean move(Direction direction){

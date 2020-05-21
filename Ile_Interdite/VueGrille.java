@@ -17,6 +17,7 @@ class VueGrille extends JPanel implements Observer {
     private Ile ile;
     /* Définition d'une taille (en pixels) pour l'affichage des zones. */
     private final static int TAILLE = 30;
+    Color[] colorList = {Color.RED, Color.BLUE, Color.GREEN, Color.CYAN.brighter()};
 
     /* Constructeur. */
     public VueGrille(Ile ile) {
@@ -29,7 +30,7 @@ class VueGrille extends JPanel implements Observer {
           taille d'affichage.
          */
         Dimension dim = new Dimension(TAILLE*Ile.LARGEUR,
-                TAILLE*Ile.HAUTEUR);
+                TAILLE*(Ile.HAUTEUR + 3));
         this.setPreferredSize(dim);
     }
 
@@ -52,6 +53,7 @@ class VueGrille extends JPanel implements Observer {
     public void paintComponent(Graphics g) {
         super.repaint();
         /* Pour chaque cellule... */
+        paintActionsRestantes(g, this.ile.compteur);
         for(int i=0; i<=Ile.LARGEUR; i++) {
             for(int j=0; j<=Ile.HAUTEUR; j++) {
                 /*
@@ -71,12 +73,21 @@ class VueGrille extends JPanel implements Observer {
       [Ile.Zone].
       Ceci serait impossible si [Zone] était déclarée privée dans [Ile].
      */
-    private void paintPlayer(Graphics g, Joueur j){
+    private void paintActionsRestantes(Graphics g, int compteur){
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, 22*TAILLE, 22*TAILLE);
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g.drawString(this.ile.getJoueurActuel().toString() +" : " + (3 - compteur) + " actions restantes" , 0, TAILLE*22);
+    }
+    private void paintPlayer(Graphics g, Joueur[] j){
         int offset = 7;
-        int x = j.x*TAILLE;
-        int y = j.y*TAILLE;
-        g.setColor(Color.RED);
-        g.fillOval(x+offset, y+offset, TAILLE- offset, TAILLE -offset);
+        for(int i = 0; i < this.ile.nbJoueurs; i++){
+            int x = this.ile.getJoueur(i).x*TAILLE;
+            int y = this.ile.getJoueur(i).y*TAILLE;
+            g.setColor(colorList[i]);
+            g.fillOval(x+offset, y+offset, TAILLE- offset, TAILLE -offset);
+        }
     }
     private void paint(Graphics g, Zone z, int x, int y) {
         int offset = 7;
@@ -88,10 +99,12 @@ class VueGrille extends JPanel implements Observer {
             case INNONDEE: g.setColor(Color.CYAN.darker()); break;
             case SUBMERGEE: g.setColor(Color.BLUE.darker()); break;
         }
+        g.fillRect(x + offset, y + offset, TAILLE - offset, TAILLE  - offset);
         if(z.isHelico()){
             g.setColor(Color.BLACK);
+            g.drawString("H", x+offset + 4, y+offset + 21);
+            g.setColor(Color.WHITE);
+            g.drawString("H", x+offset + 2, y+offset + 19);
         }
-        /* Coloration d'un rectangle. */
-        g.fillRect(x + offset, y + offset, TAILLE - offset, TAILLE  - offset);
     }
 }

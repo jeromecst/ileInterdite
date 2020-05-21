@@ -2,6 +2,7 @@ package Ile_Interdite;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 /**
@@ -92,7 +93,7 @@ class CVue {
       de l'application graphique.
      */
         JFrame frame = new JFrame();
-        frame.setTitle("Le projet de Jérôme et Ursula");
+        frame.setTitle("L'Ile Interdite");
         /*
          On précise un mode pour disposer les différents éléments à
          l'intérieur de la fenêtre. Quelques possibilités sont :
@@ -116,8 +117,8 @@ class CVue {
       nos deux parties de l'interface graphique.
      */
         VueGrille grille = new VueGrille(ile);
-        frame.add(grille);
         VueCommandes commandes = new VueCommandes(ile);
+        frame.add(grille);
         frame.add(commandes);
         /*
           Remarque : on peut passer à la méthode [add] des paramètres
@@ -135,6 +136,9 @@ class CVue {
            - Indiquer qu'on quitte l'application si la fenêtre est fermée.
            - Préciser que la fenêtre doit bien apparaître à l'écran.
          */
+        Keyboard keys = new Keyboard(ile);
+        frame.addKeyListener(keys);
+        frame.setFocusable(true);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);

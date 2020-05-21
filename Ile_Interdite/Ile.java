@@ -9,8 +9,11 @@ class Ile extends Observable {
     public static final double SPECIAL=.3;
     // On stocke un tableau de zones.
     private final Zone[][] zones;
-    Joueur joueur;
+    public final int nbJoueurs = 4;
+    Joueur[] joueur = new Joueur[nbJoueurs];
+    public int joueurActuel = 0;
     private final Random rd = new Random();
+    public int compteur = 0;
 
     /* Construction : on initialise un tableau de zones. */
     public Ile() {
@@ -44,7 +47,17 @@ class Ile extends Observable {
         int x = this.rd.nextInt(LARGEUR);
         int y = this.rd.nextInt(HAUTEUR);
         this.zones[x][y].setHelico();
-        this.joueur = new Joueur(this, x, y);
+        for(int i = 0; i < nbJoueurs; i++){
+            this.joueur[i] = new Joueur(this, x, y, "J" + i);
+        }
+    }
+
+    Joueur getJoueurActuel(){
+        return this.joueur[joueurActuel];
+    }
+
+    Joueur getJoueur(int i){
+        return this.joueur[i];
     }
 
     public void fin_de_tour() {

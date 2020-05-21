@@ -27,10 +27,12 @@ class VueCommandes extends JPanel {
         JButton boutonGauche = new JButton("<");
         JButton boutonHaut = new JButton("^");
         JButton boutonBas = new JButton("v");
+        JButton boutonFDT = new JButton("fin de tour");
         this.add(boutonGauche);
         this.add(boutonDroite);
         this.add(boutonHaut);
         this.add(boutonBas);
+        this.add(boutonFDT);
         /*
           Le bouton, lorsqu'il est cliqué par l'utilisateur, produit un
           événement, de classe [ActionEvent].
@@ -53,14 +55,16 @@ class VueCommandes extends JPanel {
           contrôleur sera donc particulièrement simple. Cela nécessite
           néanmoins la création d'une classe dédiée.
          */
-        ControleurDroite ctrl = new ControleurDroite(ile);
-        ControleurBas ctrl2 = new ControleurBas(ile);
-        ControleurHaut ctrl3 = new ControleurHaut(ile);
-        ControleurGauche ctrl4 = new ControleurGauche(ile);
+        ControleurDroite ctrlDroite = new ControleurDroite(ile);
+        ControleurBas ctrlBas = new ControleurBas(ile);
+        ControleurHaut ctrlHaut = new ControleurHaut(ile);
+        ControleurGauche ctrlGauche = new ControleurGauche(ile);
+        Controleur ctrl5 = new Controleur(ile);
         /* Enregistrement du contrôleur comme auditeur du bouton. */
-        boutonDroite.addActionListener(ctrl);
-        boutonBas.addActionListener(ctrl2);
-        boutonHaut.addActionListener(ctrl3);
-        boutonGauche.addActionListener(ctrl4);
+        boutonDroite.addActionListener(ctrlDroite);
+        boutonBas.addActionListener(ctrlBas);
+        boutonHaut.addActionListener(ctrlHaut);
+        boutonGauche.addActionListener(ctrlGauche);
+        boutonFDT.addActionListener(ctrl5);
     }
 }
