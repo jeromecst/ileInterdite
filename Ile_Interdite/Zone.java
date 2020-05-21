@@ -55,10 +55,12 @@ class Zone {
         return this.helico;
     }
 
-    void asseche(){
+    boolean asseche(){
         if(this.etat == Etat.INNONDEE){
             this.etat = Etat.NORMAL;
+            return true;
         }
+        return false;
     }
 
     boolean estSubmerge(){

@@ -29,11 +29,18 @@ class ControleurAss extends Controleur{
 
     @Override
     public void action() {
-        if(this.ile.getJoueurActuel().getZone().getEtat() == Etat.INNONDEE){
-            this.ile.getJoueurActuel().getZone().asseche();
+        if(this.ile.compteur < 3) {
+            if (this.ile.getJoueurActuel().getZone().getEtat() == Etat.INNONDEE) {
+                this.ile.getJoueurActuel().getZone().asseche();
+                this.ile.compteur += 1;
+            } else if (this.ile.zoneAdjacenteInnondee()) {
+                this.ile.modeAssecher = true;
+            } else {
+                System.out.println("Il n'y a pas de zones à assécher !");
+            }
         }
-        else{
-            this.ile.assecher = true;
+        else {
+            System.out.println("Fin du tour");
         }
     }
 
@@ -43,14 +50,6 @@ class ControleurAss extends Controleur{
 }
 
 class ControleurDirection implements ActionListener {
-    /**
-     * On garde un pointeur vers le modèle, car le contrôleur doit
-     * provoquer un appel de méthode du modèle.
-     * Remarque : comme cette classe est interne, cette inscription
-     * explicite du modèle est inutile. On pourrait se contenter de
-     * faire directement référence au modèle enregistré pour la classe
-     * englobante [VueCommandes].
-     */
     Ile ile;
     Direction direction;
     public ControleurDirection(Ile ile, Direction direction) {
@@ -59,15 +58,18 @@ class ControleurDirection implements ActionListener {
     }
 
     public void action(){
-        if(this.ile.compteur < 3 && ile.getJoueurActuel().move(this.direction)) {
+        if(this.ile.compteur < 3 && this.ile.modeAssecher && this.ile.asseche(this.direction)){
             this.ile.compteur += 1;
+            this.ile.modeAssecher = false;
+        }
+        else if(this.ile.compteur < 3 && ile.getJoueurActuel().move(this.direction)) {
+                this.ile.compteur += 1;
+        }
+        else {
+            System.out.println("Fin du tour");
         }
     }
 
-    /**
-     * Action effectuée à réception d'un événement : appeler la
-     * méthode [fin_de_tour] du modèle.
-     */
     public void actionPerformed(ActionEvent e) {
         this.action();
     }
