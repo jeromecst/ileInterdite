@@ -14,7 +14,7 @@ import java.awt.*;
  */
 class VueGrille extends JPanel implements Observer {
     /* On maintient une référence vers le modèle. */
-    private Ile ile;
+    private final Ile ile;
     /* Définition d'une taille (en pixels) pour l'affichage des zones. */
     private final static int TAILLE = 30;
     Color[] colorList = {Color.RED, Color.BLUE, Color.GREEN, Color.CYAN.brighter()};

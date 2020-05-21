@@ -9,15 +9,21 @@ class Ile extends Observable {
     public static final double SPECIAL=.3;
     // On stocke un tableau de zones.
     private final Zone[][] zones;
-    public final int nbJoueurs = 4;
+    // Nombre de joueurs
+    public final int nbJoueurs = 2;
+    // Tableau du nombre de joueurs
     Joueur[] joueur = new Joueur[nbJoueurs];
+    // Int qui reconnait le joueur actuel, valeur comprise entre 0 et nbJoueurs - 1
     public int joueurActuel = 0;
     private final Random rd = new Random();
+    // Compteur qui compte le nombre d'actions du joueurs actuel
     public int compteur = 0;
     // Etat dans lequel les boutons permettent d'assecher une zone adjacente
     boolean modeAssecher = false;
 
-    /* Construction : on initialise un tableau de zones. */
+    /**
+     * Constructeur, rempli la grille de zones aléatoires
+     */
     public Ile() {
         /*
           Pour éviter les problèmes aux bords, on ajoute une ligne et une
@@ -33,6 +39,10 @@ class Ile extends Observable {
         setHelico();
     }
 
+    /**
+     * Permet d'attribuer un élément à une zone
+     * @param z
+     */
     private void setElem(Zone z){
         double pourcent = rd.nextDouble();
         if(pourcent < SPECIAL){
@@ -83,14 +93,26 @@ class Ile extends Observable {
         }
     }
 
+    /**
+     * @return Renvoie le joueur i
+     */
     Joueur getJoueurActuel(){
         return this.joueur[joueurActuel];
     }
 
+    /**
+     * @param i le numéro du joueur
+     * @return renvoie le joueur i
+     */
     Joueur getJoueur(int i){
         return this.joueur[i];
     }
 
+    //TODO condition d'arrêt quand toutes les zones sont submergées
+    /**
+     * Fonction qui innonde 3 zones aléatoires, si la zone est déjà inondé, elle sera submergée
+     * On ne submerge pas les zones déjà subermgées
+     */
     public void fin_de_tour() {
         int x, y;
         for(int i = 0; i < 3; i++) {
@@ -103,10 +125,10 @@ class Ile extends Observable {
         notifyObservers();
     }
 
-
-    /*
-      Une méthode pour renvoyer la zone aux coordonnées choisies (sera
-      utilisée par la vue).
+    /**
+     * @param x position x
+     * @param y position y
+     * @return renvoie la zone à la position demandée
      */
     public Zone getZone(int x, int y) {
         return zones[x][y];

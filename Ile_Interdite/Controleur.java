@@ -58,6 +58,9 @@ class ControleurDirection implements ActionListener {
         this.direction = direction;
     }
 
+    /*
+    On sépare actionPerformed et action pour pouvoir récupérer cette méthode pour le clavier
+     */
     public void action(){
         if(this.ile.compteur < 3 && this.ile.modeAssecher && this.ile.asseche(this.direction)){
             this.ile.compteur += 1;
