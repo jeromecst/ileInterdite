@@ -36,16 +36,15 @@ class ControleurDirection implements ActionListener {
         this.direction = direction;
     }
 
+    /*
+    On sépare actionPerformed et action pour pouvoir récupérer cette méthode pour le clavier
+     */
     public void action(){
         if(this.ile.compteur < 3 && ile.getJoueurActuel().move(this.direction)) {
             this.ile.compteur += 1;
         }
     }
 
-    /**
-     * Action effectuée à réception d'un événement : appeler la
-     * méthode [fin_de_tour] du modèle.
-     */
     public void actionPerformed(ActionEvent e) {
         this.action();
     }
