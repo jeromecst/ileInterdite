@@ -16,9 +16,9 @@ class VueGrille extends JPanel implements Observer {
     /* On maintient une référence vers le modèle. */
     private final Ile ile;
     /* Définition d'une taille (en pixels) pour l'affichage des zones. */
-    private final static int TAILLE = 60;
+    private final static int TAILLE = 80;
     private final static int offset = ((int) (TAILLE*7./30.));
-    Color[] colorList = {Color.RED, Color.BLUE, Color.GREEN, Color.CYAN.brighter(), Color.GREEN.darker()};
+    Color[] colorList = {Color.RED.brighter().brighter(), Color.BLUE.brighter().brighter(), Color.GREEN.brighter().brighter(), Color.CYAN.brighter(), Color.GREEN.brighter().brighter()};
 
     /* Constructeur. */
     public VueGrille(Ile ile) {
@@ -78,8 +78,8 @@ class VueGrille extends JPanel implements Observer {
     }
 
     private void paintMessage(Graphics g, String msg) {
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, TAILLE*Ile.LARGEUR*10, TAILLE*Ile.HAUTEUR*10);
+        //g.setColor(Color.WHITE);
+        //g.fillRect(0, 0, TAILLE*Ile.LARGEUR*10, TAILLE*Ile.HAUTEUR*10);
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE));
         g.drawString(msg,(int)( TAILLE*Ile.LARGEUR/4.), (int)( TAILLE*Ile.HAUTEUR/2.) );
@@ -245,7 +245,8 @@ class VueGrille extends JPanel implements Observer {
             g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/2-offset));
             g.drawString(this.ile.getJoueur(i).toString(), x+offset, y+offset);
             g.setColor(colorList[i]);
-            g.fillOval(x+offset, y+offset, TAILLE- offset, TAILLE -offset);
+            g.fillOval((int) (x+offset*5./3.), y+offset, (int)(TAILLE/2.3), (int)(TAILLE/2.3) );
+            g.fillPolygon(new int[]{(int)(x + offset*3./2.), (int)(x+TAILLE-1./2.*offset), (int) ((2*x + offset + TAILLE)/2.)}, new int[]{y + TAILLE, y + TAILLE, y+2*offset}, 3);
         }
     }
 

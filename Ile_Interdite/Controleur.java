@@ -25,8 +25,8 @@ class Controleur implements ActionListener{
        this.ile.joueurActuel%= Ile.nbJoueurs;
        this.ile.modeAssecher = false;
        switch (this.ile.testEnd()){
-           case WIN: this.ile.isWin = true; break;
-           case LOSE: this.ile.isLost = true; break;
+           case WIN: this.ile.isWin = true; this.ile.compteur = Ile.MAXACTIONS; break;
+           case LOSE: this.ile.isLost = true; this.ile.compteur = Ile.MAXACTIONS; break;
            case NONE: break;
        }
    }
@@ -133,7 +133,7 @@ class ControleurDirection implements ActionListener {
 
     /**
      * Réagis au bouton
-     * @param actionEvent le bouton activé
+     * @param e le bouton activé
      */
     public void actionPerformed(ActionEvent e) {
         this.action();

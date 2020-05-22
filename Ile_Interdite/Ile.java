@@ -7,7 +7,7 @@ class Ile extends Observable {
     // On fixe le nombre d'actions max
     public static final int MAXACTIONS = 3;
     // On fixe la taille de la grille.
-    public static final int HAUTEUR=7, LARGEUR=7;
+    public static final int HAUTEUR=8, LARGEUR=8;
     // On stocke un tableau de zones.
     private final Zone[][] zones;
     // Nombre de joueurs
@@ -48,6 +48,19 @@ class Ile extends Observable {
         setArtefacts();
         this.cartesZones.melangerPaquet();
         fillCartesElements();
+        initPlayers();
+    }
+
+    /**
+     * Créer des joueurs et les places à des positions aléatoires sur la grille
+     */
+    private void initPlayers() {
+        int x, y;
+        for(int i = 0; i < Ile.nbJoueurs; i++){
+            x = rd.nextInt(LARGEUR);
+            y = rd.nextInt(HAUTEUR);
+            this.joueur[i] = new Joueur(this, x, y, "J" + i, i);
+        }
     }
 
     /**
@@ -130,6 +143,27 @@ class Ile extends Observable {
     }
 
     /**
+     * Fonction zoneAdjacenteInnondee
+     * @param x la position x
+     * @param y la position y
+     * @return vrai si une zone autour des coordonnées est innondée
+     */
+    public boolean zoneAdjacenteSubmergee(int x, int y){
+        return (estSubmergee(x, y-1)
+                && estSubmergee(x, y+1)
+                && estSubmergee(x-1, y)
+                && estSubmergee(x+1, y))
+                ;
+    }
+
+    private boolean estSubmergee(int x, int y) {
+        if(x > LARGEUR || y>HAUTEUR || x<0 || y<0){
+            return true;
+        }
+        return this.getZone(x, y).getEtat() == Etat.SUBMERGEE;
+    }
+
+    /**
      * Fonction estInondee
      * @param x la position x
      * @param y la position y
@@ -162,15 +196,11 @@ class Ile extends Observable {
 
     /**
      * Fonction qui choisie une zone helicoptère au hasard
-     * et qui attribue ses coordonnées à tous les joueurs
      */
     private void setHelico() {
         int x = this.rd.nextInt(LARGEUR);
         int y = this.rd.nextInt(HAUTEUR);
         this.zones[x][y].setHelico();
-        for(int i = 0; i < nbJoueurs; i++){
-            this.joueur[i] = new Joueur(this, x, y, "J" + i, i);
-        }
         this.helico = this.zones[x][y];
     }
 
@@ -223,7 +253,7 @@ class Ile extends Observable {
      * - tous les joueurs sont sur la zone helico
      * - ils ont les 4 artefacts
      * LOSE :
-     * - un joueur est submergé
+     * - un joueur est sur une zone submergée, les zones adjacentes aussi
      * - un artefact est submergé
      * - la zone helico est submergée
      * @return WIN si la partie est gagné, LOSE si elle est perdue, NONE sinon
@@ -240,13 +270,14 @@ class Ile extends Observable {
 
     /**
      * Fonction joueurSurZoneSubmergee
-     * @return vrai si au moins un joueur est sur une zone submergée, faux si aucun n'est submergé
+     * @return vrai si au moins un joueur est sur une zone submergée, les zones adjacentes égalements, faux si aucun n'est submergé
      */
     private boolean joueurSurZoneSubmergee(){
+        int x, y;
         for(Joueur j: this.joueur){
-            if(j.getZone().estSubmerge()){
-                return true;
-            }
+            x = j.getZone().x;
+            y = j.getZone().y;
+            return this.zoneAdjacenteSubmergee(x, y);
         }
         return false;
     }
