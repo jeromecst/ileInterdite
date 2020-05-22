@@ -11,6 +11,7 @@ enum Element{
     EAU,
     TERRE,
     FEU,
+    MONTEEDESEAUX,
     AUCUN;
 }
 

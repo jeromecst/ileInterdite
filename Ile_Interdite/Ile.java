@@ -28,6 +28,9 @@ class Ile extends Observable {
     private final Zone[] zoneArte = new Zone[4];
     boolean isWin = false;
     boolean isLost = false;
+    //Paquet de cartes
+    PaquetCartes<Zone> cartesZones;
+    PaquetCartes<Element> cartesElements;
 
     /**
      * Constructeur, rempli la grille de zones aléatoires
@@ -37,10 +40,12 @@ class Ile extends Observable {
           Pour éviter les problèmes aux bords, on ajoute une ligne et une
           colonne de chaque côté, dont les zones n'évolueront pas.
          */
-        zones = new Zone[LARGEUR+1][HAUTEUR+1];
+        this.cartesZones = new PaquetCartes<>(this);
+        this.zones = new Zone[LARGEUR+1][HAUTEUR+1];
         for(int i=0; i<LARGEUR+1; i++) {
             for(int j=0; j<HAUTEUR+1; j++) {
-                zones[i][j] = new Zone(this,i, j);
+                this.zones[i][j] = new Zone(this,i, j);
+                this.cartesZones.add(this.zones[i][j]);
             }
         }
         setHelico();
