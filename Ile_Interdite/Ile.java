@@ -4,7 +4,7 @@ import java.util.Random;
 
 class Ile extends Observable {
     // On fixe le nombre d'actions max
-    public  static final int MAXACTIONS = 3;
+    public static final int MAXACTIONS = 3;
     // On fixe la taille de la grille.
     public static final int HAUTEUR=7, LARGEUR=7;
     // On fixe le pourcentage de zones associées à un élément.
@@ -12,7 +12,7 @@ class Ile extends Observable {
     // On stocke un tableau de zones.
     private final Zone[][] zones;
     // Nombre de joueurs
-    public final int nbJoueurs = 4;
+    public static final int nbJoueurs = 5;
     // Tableau du nombre de joueurs
     Joueur[] joueur = new Joueur[nbJoueurs];
     // Int qui reconnait le joueur actuel, valeur comprise entre 0 et nbJoueurs - 1
@@ -50,6 +50,7 @@ class Ile extends Observable {
         }
         setHelico();
         setArtefacts();
+        this.cartesZones.melangerPaquet();
     }
 
     private void setArtefacts() {
@@ -155,13 +156,11 @@ class Ile extends Observable {
      * On ne submerge pas les zones déjà subermgées
      */
     public void fin_de_tour() {
-        int x, y;
-        for(int i = 0; i < 3; i++) {
-            do {
-                x = this.rd.nextInt(LARGEUR);
-                y = this.rd.nextInt(HAUTEUR);
-            } while(zones[x][y].estSubmerge());
-            zones[x][y].innonde();
+        int i = 0;
+        while(i < 3){
+            if(this.cartesZones.tirerCarte().innonde()){
+                i++;
+            }
         }
         notifyObservers();
     }

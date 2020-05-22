@@ -18,7 +18,7 @@ class VueGrille extends JPanel implements Observer {
     /* Définition d'une taille (en pixels) pour l'affichage des zones. */
     private final static int TAILLE = 60;
     private final static int offset = ((int) (TAILLE*7./30.));
-    Color[] colorList = {Color.RED, Color.BLUE, Color.GREEN, Color.CYAN.brighter()};
+    Color[] colorList = {Color.RED, Color.BLUE, Color.GREEN, Color.CYAN.brighter(), Color.GREEN.darker()};
 
     /* Constructeur. */
     public VueGrille(Ile ile) {
@@ -210,7 +210,7 @@ class VueGrille extends JPanel implements Observer {
         g.drawString(this.ile.getJoueurActuel().toString() +" : " + (Ile.MAXACTIONS - compteur) + " actions restantes" , offset, beginningY);
     }
     private void paintPlayers(Graphics g){
-        for(int i = 0; i < this.ile.nbJoueurs; i++){
+        for(int i = 0; i < Ile.nbJoueurs; i++){
             int x = this.ile.getJoueur(i).x*TAILLE;
             int y = this.ile.getJoueur(i).y*TAILLE;
             g.setColor(Color.WHITE);
@@ -223,10 +223,11 @@ class VueGrille extends JPanel implements Observer {
     private void paint(Graphics g, Zone z, int x, int y) {
         g.setColor(Color.BLUE.darker());
         g.fillRect(x, y, TAILLE, TAILLE);
+        boolean nePasPaintElement = false;
         switch (z.getEtat()){
             case NORMAL: g.setColor(Color.GREEN.darker()); break;
             case INNONDEE: g.setColor(Color.CYAN.darker()); break;
-            case SUBMERGEE: g.setColor(Color.BLUE.darker()); break;
+            case SUBMERGEE: g.setColor(Color.BLUE.darker()); nePasPaintElement = true; break;
         }
         g.fillRect(x + offset, y + offset, TAILLE - offset, TAILLE  - offset);
         switch (z.getElement()){
@@ -245,7 +246,7 @@ class VueGrille extends JPanel implements Observer {
             case AUCUN:
                 g.setColor(Color.BLUE.darker());
         }
-        g.fillRect(x + offset, y + offset*4, TAILLE - offset, (int) ((TAILLE  - offset)/10.));
+        if(! nePasPaintElement){g.fillRect(x + offset, y + offset*4, TAILLE - offset, (int) ((TAILLE  - offset)/10.));}
         if(z.isHelico()){
             g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE-offset));
             g.setColor(Color.BLACK);

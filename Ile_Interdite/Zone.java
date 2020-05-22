@@ -79,13 +79,14 @@ class Zone {
         return this.element;
     }
 
-    void innonde(){
+    boolean innonde(){
         switch (this.etat){
             case NORMAL:
-                this.etat = Etat.INNONDEE; break;
-            case INNONDEE:
-            case SUBMERGEE:
-                this.etat = Etat.SUBMERGEE; break;
+                this.etat = Etat.INNONDEE;
+                return true;
+            case INNONDEE: this.etat = Etat.SUBMERGEE;
+            return true;
+            default: return false;
         }
     }
 
