@@ -20,7 +20,6 @@ public class Joueur {
         this.clefs = new ArrayList<>();
         this.artefacts = new ArrayList<>();
         this.num = n;
-
     }
 
     boolean prendreArtefact(){
@@ -64,6 +63,9 @@ public class Joueur {
         return this.clefs.size() > 0;
     }
 
+    boolean hasArtefact(){
+        return this.artefacts.size() > 0;
+    }
     void ajouteClefs(Clef clef){
         this.clefs.add(clef);
     }

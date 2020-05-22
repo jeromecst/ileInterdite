@@ -3,6 +3,8 @@ package Ile_Interdite;
 import java.util.Random;
 
 class Ile extends Observable {
+    // On fixe le nombre d'actions max
+    public  static final int MAXACTIONS = 3;
     // On fixe la taille de la grille.
     public static final int HAUTEUR=7, LARGEUR=7;
     // On fixe le pourcentage de zones associées à un élément.
@@ -23,7 +25,7 @@ class Ile extends Observable {
     //Zone helicoptère
     private Zone helico;
     //Zones artefacts
-    private Zone[] zoneArte = new Zone[4];
+    private final Zone[] zoneArte = new Zone[4];
     boolean isWin = false;
     boolean isLost = false;
 

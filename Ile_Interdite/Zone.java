@@ -31,7 +31,7 @@ class Zone {
 
     void initChance() {
         if(this.getElement() != Element.AUCUN){
-            this.chanceClef = this.ile.rd.nextDouble()/2.;
+            this.chanceClef = this.ile.rd.nextDouble()/2.+ 0.5;
         }
     }
 

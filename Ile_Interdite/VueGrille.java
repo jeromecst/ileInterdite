@@ -106,16 +106,16 @@ class VueGrille extends JPanel implements Observer {
     }
 
     private void paintClefsJoueur(Graphics g, Joueur j){
-        int beginningY = (int) (TAILLE*(Ile.HAUTEUR + 1./2.) + 3*offset);
+        int beginningY = (int) (TAILLE*(Ile.HAUTEUR + 1./2.) + 4*offset);
         int beginningX = 2*offset;
         int beginningXAfterText = beginningX + TAILLE*2;
         int beginningXFontAfterText = beginningXAfterText + offset/4;
-        int positionY = beginningY + TAILLE*j.getNum();
+        int positionY = beginningY + TAILLE*j.getNum()/2;
         int positionYBoule = positionY - 2*offset;
         int positionYtext = (int)(positionYBoule + 1.4*offset);
         int tailleBoule = TAILLE/2;
         int tailleFont = TAILLE/6;
-        g.setFont(new Font("TimesRoman", Font.BOLD, (int) (TAILLE/2)));
+        g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/2));
         g.setColor(Color.BLACK);
         g.drawString(j.toString() +" clefs : ", 1, positionY);
         for(Clef c: j.getAllKeys()){
@@ -153,25 +153,25 @@ class VueGrille extends JPanel implements Observer {
     }
     private void paintArte(Graphics g){
         for(Joueur j: ile.joueur){
-            if(j.hasKey()){
+            if(j.hasArtefact()){
                 paintArteJouerurs(g, j);
             }
         }
     }
 
     private void paintArteJouerurs(Graphics g, Joueur j){
-        int beginningY = (int) (TAILLE*(Ile.HAUTEUR +1) + 3*offset);
+        int beginningY = TAILLE*(Ile.HAUTEUR +1) + 3*offset;
         int beginningX = 2*offset;
-        int beginningXAfterText = beginningX + TAILLE*2;
+        int beginningXAfterText = beginningX + TAILLE*3;
         int beginningXFontAfterText = beginningXAfterText + offset/4;
-        int positionY = beginningY + TAILLE*j.getNum();
+        int positionY = beginningY + TAILLE*(ile.joueur.length/2);
         int positionYBoule = positionY - 2*offset;
         int positionYtext = (int)(positionYBoule + 1.4*offset);
         int tailleBoule = TAILLE/2;
         int tailleFont = TAILLE/6;
-        g.setFont(new Font("TimesRoman", Font.BOLD, (int) (TAILLE/2)));
+        g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/2));
         g.setColor(Color.BLACK);
-        g.drawString("     arts : ", 1, positionY);
+        g.drawString("Artefacts : ", 1, positionY);
         for(Element e: j.getAllArtefacts()){
             switch (e){
                 case EAU:
@@ -213,7 +213,7 @@ class VueGrille extends JPanel implements Observer {
         g.fillRect(0, 0, (Ile.LARGEUR +5)*TAILLE, (Ile.HAUTEUR + 5)*TAILLE);
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.BOLD, (int) (TAILLE/2.5)));
-        g.drawString(this.ile.getJoueurActuel().toString() +" : " + (3 - compteur) + " actions restantes" , offset, beginningY);
+        g.drawString(this.ile.getJoueurActuel().toString() +" : " + (Ile.MAXACTIONS - compteur) + " actions restantes" , offset, beginningY);
     }
     private void paintPlayers(Graphics g){
         for(int i = 0; i < this.ile.nbJoueurs; i++){

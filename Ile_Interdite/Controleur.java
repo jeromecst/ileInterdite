@@ -36,7 +36,7 @@ class ControleurAss extends Controleur{
 
     @Override
     public void action() {
-        if(this.ile.compteur < 3) {
+        if(this.ile.compteur < Ile.MAXACTIONS) {
             if (this.ile.getJoueurActuel().getZone().getEtat() == Etat.INNONDEE) {
                 this.ile.getJoueurActuel().getZone().asseche();
                 this.ile.compteur += 1;
@@ -64,7 +64,7 @@ class ControleurArtefact extends Controleur{
 
     @Override
     public void action() {
-        if(this.ile.compteur < 3 && this.ile.getJoueurActuel().prendreArtefact()) {
+        if(this.ile.compteur < Ile.MAXACTIONS && this.ile.getJoueurActuel().prendreArtefact()) {
             this.ile.compteur += 1;
         }
     }
@@ -86,11 +86,11 @@ class ControleurDirection implements ActionListener {
     On sépare actionPerformed et action pour pouvoir récupérer cette méthode pour le clavier
      */
     public void action(){
-        if(this.ile.compteur < 3 && this.ile.modeAssecher && this.ile.asseche(this.direction)){
+        if(this.ile.compteur < Ile.MAXACTIONS && this.ile.modeAssecher && this.ile.asseche(this.direction)){
             this.ile.compteur += 1;
             this.ile.modeAssecher = false;
         }
-        else if(this.ile.compteur < 3 && ile.getJoueurActuel().move(this.direction)) {
+        else if(this.ile.compteur < Ile.MAXACTIONS && ile.getJoueurActuel().move(this.direction)) {
                 this.ile.compteur += 1;
         }
         else {
