@@ -10,12 +10,13 @@ class Controleur implements ActionListener{
    }
 
    public void action(){
+       this.ile.tirageCarteFinDeTour();
        this.ile.fin_de_tour();
        this.ile.compteur = 0;
        this.ile.joueurActuel+=1;
        this.ile.joueurActuel%= Ile.nbJoueurs;
        this.ile.modeAssecher = false;
-       this.ile.ajouteCleeAleatoireJoueurActuel();
+       System.out.print("\nJoueur " + this.ile.getJoueurActuel().getNum() + " ");
        switch (this.ile.testend()){
            case WIN: this.ile.isWin = true; break;
            case LOSE: this.ile.isLost = true; break;
@@ -47,7 +48,7 @@ class ControleurAss extends Controleur{
             }
         }
         else {
-            System.out.println("Fin du tour");
+            System.out.print("Fin du tour ");
         }
     }
 
@@ -94,7 +95,7 @@ class ControleurDirection implements ActionListener {
                 this.ile.compteur += 1;
         }
         else {
-            System.out.println("Fin du tour");
+            System.out.print("Fin du tour ");
         }
     }
 

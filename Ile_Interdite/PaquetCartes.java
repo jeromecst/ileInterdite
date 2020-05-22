@@ -59,9 +59,12 @@ public class PaquetCartes<E> {
         cartes.paquet.add(Element.EAU);
         cartes.paquet.add(Element.TERRE);
         cartes.paquet.add(Element.FEU);
+        cartes.paquet.add(Element.AUCUN);
+        cartes.paquet.add(Element.MONTEEDESEAUX);
         System.out.println("Paquet de cartes : " + cartes.toString());
         cartes.melangerPaquet();
         System.out.println("Paquet mélangé : "  + cartes.toString());
+        cartes.tirerCarte();
         cartes.tirerCarte();
         cartes.tirerCarte();
         cartes.tirerCarte();

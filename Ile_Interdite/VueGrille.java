@@ -223,30 +223,12 @@ class VueGrille extends JPanel implements Observer {
     private void paint(Graphics g, Zone z, int x, int y) {
         g.setColor(Color.BLUE.darker());
         g.fillRect(x, y, TAILLE, TAILLE);
-        boolean nePasPaintElement = false;
         switch (z.getEtat()){
             case NORMAL: g.setColor(Color.GREEN.darker()); break;
             case INNONDEE: g.setColor(Color.CYAN.darker()); break;
-            case SUBMERGEE: g.setColor(Color.BLUE.darker()); nePasPaintElement = true; break;
+            case SUBMERGEE: g.setColor(Color.BLUE.darker()); break;
         }
         g.fillRect(x + offset, y + offset, TAILLE - offset, TAILLE  - offset);
-        switch (z.getElement()){
-            case EAU:
-                g.setColor(Color.BLUE);
-                break;
-            case TERRE:
-                g.setColor(Color.RED.darker());
-                break;
-            case FEU:
-                g.setColor(Color.YELLOW);
-                break;
-            case AIR:
-                g.setColor(Color.GRAY);
-                break;
-            case AUCUN:
-                g.setColor(Color.BLUE.darker());
-        }
-        if(! nePasPaintElement){g.fillRect(x + offset, y + offset*4, TAILLE - offset, (int) ((TAILLE  - offset)/10.));}
         if(z.isHelico()){
             g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE-offset));
             g.setColor(Color.BLACK);

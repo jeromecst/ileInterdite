@@ -136,6 +136,7 @@ class CVue {
            - Préciser que la fenêtre doit bien apparaître à l'écran.
          */
         Keyboard keys = new Keyboard(ile);
+        frame.add(keys);
         frame.addKeyListener(keys);
         frame.setFocusable(true);
         frame.pack();

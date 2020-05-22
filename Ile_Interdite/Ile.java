@@ -12,7 +12,7 @@ class Ile extends Observable {
     // On stocke un tableau de zones.
     private final Zone[][] zones;
     // Nombre de joueurs
-    public static final int nbJoueurs = 5;
+    public static final int nbJoueurs = 2;
     // Tableau du nombre de joueurs
     Joueur[] joueur = new Joueur[nbJoueurs];
     // Int qui reconnait le joueur actuel, valeur comprise entre 0 et nbJoueurs - 1
@@ -51,6 +51,22 @@ class Ile extends Observable {
         setHelico();
         setArtefacts();
         this.cartesZones.melangerPaquet();
+        fillCartesElements();
+    }
+
+    private void fillCartesElements(){
+        this.cartesElements = new PaquetCartes<>(this);
+        for(int i = 0; i < 10; i++){
+            this.cartesElements.add(Element.AUCUN);
+        }
+        for(int i = 0; i < 2; i++){
+            this.cartesElements.add(Element.MONTEEDESEAUX);
+            this.cartesElements.add(Element.FEU);
+            this.cartesElements.add(Element.AIR);
+            this.cartesElements.add(Element.EAU);
+            this.cartesElements.add(Element.TERRE);
+        }
+        this.cartesElements.melangerPaquet();
     }
 
     private void setArtefacts() {
@@ -66,11 +82,19 @@ class Ile extends Observable {
         }
     }
 
-    public void ajouteCleeAleatoireJoueurActuel(){
-        double chance  = this.getJoueurActuel().getZone().getChanceClef();
-        Element elem = this.getJoueurActuel().getZone().getElement();
-        if(this.rd.nextDouble() < chance && elem != Element.AUCUN && ! this.getJoueurActuel().hasKey(new Clef(elem))){
-            this.getJoueurActuel().ajouteClefs(new Clef(elem));
+    public void tirageCarteFinDeTour(){
+        Element carte = this.cartesElements.tirerCarte();
+        switch (carte){
+            case AUCUN: break;
+            case MONTEEDESEAUX:
+                this.getJoueurActuel().getZone().innonde();
+                System.out.println("Montée des eaux !");
+                break;
+            case AIR:
+            case FEU:
+            case EAU:
+            case TERRE: this.getJoueurActuel().ajouteClefs(new Clef(carte));
+            System.out.println("Joueur " + this.getJoueurActuel().getNum() + " trouve une clée !");
         }
     }
 
@@ -180,10 +204,20 @@ class Ile extends Observable {
         if(this.allArtefacts() && allHeliport()){
             return Fin.WIN;
         }
-        if(this.helico.estSubmerge() || zoneArtefactSubmergee()){
+        if(this.helico.estSubmerge() || zoneArtefactSubmergee() || this.joueurSurZoneSubmergee()){
             return Fin.LOSE;
         }
         return Fin.NONE;
+    }
+
+    //TODO: Je ne sais pas si on garde ça
+    private boolean joueurSurZoneSubmergee(){
+        for(Joueur j: this.joueur){
+            if(j.getZone().estSubmerge()){
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean allArtefacts(){
