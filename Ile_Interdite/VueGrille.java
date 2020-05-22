@@ -90,12 +90,10 @@ class VueGrille extends JPanel implements Observer {
         g.fillRect(0, 0, TAILLE*Ile.HAUTEUR + offset, TAILLE*Ile.LARGEUR +offset);
     }
 
-    /*
-      Fonction auxiliaire de dessin d'une cellule.
-      Ici, la classe [Zone] ne peut être désignée que par l'intermédiaire
-      de la classe [Ile] à laquelle elle est interne, d'où le type
-      [Ile.Zone].
-      Ceci serait impossible si [Zone] était déclarée privée dans [Ile].
+    /**
+     * Fonction paintClefs
+     * Affiche les clefs de chaque joueur si il en possède
+     * @param g le graphique
      */
     private void paintClefs(Graphics g){
         for(Joueur j: ile.joueur){
@@ -105,6 +103,12 @@ class VueGrille extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Fonction paintClefsJoueurs
+     * Affiche l'ensemble des clefs que le joueur possède
+     * @param g le graphique
+     * @param j le joueur
+     */
     private void paintClefsJoueur(Graphics g, Joueur j){
         int beginningY = (int) (TAILLE*(Ile.HAUTEUR + 1./2.) + 4*offset);
         int beginningX = 2*offset;
@@ -148,15 +152,27 @@ class VueGrille extends JPanel implements Observer {
             }
         }
     }
+
+    /**
+     * Fonction paintArte
+     * Affiche les artefacts de chaque joueur si il en possède
+     * @param g le graphique
+     */
     private void paintArte(Graphics g){
         for(Joueur j: ile.joueur){
             if(j.hasArtefact()){
-                paintArteJouerurs(g, j);
+                paintArteJoueurs(g, j);
             }
         }
     }
 
-    private void paintArteJouerurs(Graphics g, Joueur j){
+    /**
+     * Fonction paintArteJoueurs
+     * Affiche l'ensemble des artefacts que le joueur possède
+     * @param g le graphique
+     * @param j le joueur
+     */
+    private void paintArteJoueurs(Graphics g, Joueur j){
         int beginningY = TAILLE*(Ile.HAUTEUR +1) + 3*offset;
         int beginningX = 2*offset;
         int beginningXAfterText = beginningX + TAILLE*3;
@@ -201,6 +217,12 @@ class VueGrille extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Fonction paintActionsRestantes
+     * Affiche le numero du joueur et le nombre d'action qu'il lui reste à faire
+     * @param g le graphic
+     * @param compteur d'actions restantes
+     */
     private void paintActionsRestantes(Graphics g, int compteur){
         int beginningY = (TAILLE*(Ile.HAUTEUR ) + 3*offset);
         g.setColor(Color.WHITE);
@@ -209,6 +231,12 @@ class VueGrille extends JPanel implements Observer {
         g.setFont(new Font("TimesRoman", Font.BOLD, (int) (TAILLE/2.5)));
         g.drawString(this.ile.getJoueurActuel().toString() +" : " + (Ile.MAXACTIONS - compteur) + " actions restantes" , offset, beginningY);
     }
+
+    /**
+     * Fonction paintPlayers
+     * Affiche les joueurs sur la grille
+     * @param g le graphique
+     */
     private void paintPlayers(Graphics g){
         for(int i = 0; i < Ile.nbJoueurs; i++){
             int x = this.ile.getJoueur(i).x*TAILLE;
@@ -220,6 +248,15 @@ class VueGrille extends JPanel implements Observer {
             g.fillOval(x+offset, y+offset, TAILLE- offset, TAILLE -offset);
         }
     }
+
+    /**
+     * Fonction paint
+     * Affiche la grille, les artefacts, les états...
+     * @param g le graphique
+     * @param z la zone à afficher
+     * @param x la position x
+     * @param y la position y
+     */
     private void paint(Graphics g, Zone z, int x, int y) {
         g.setColor(Color.BLUE.darker());
         g.fillRect(x, y, TAILLE, TAILLE);

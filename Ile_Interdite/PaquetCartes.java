@@ -4,24 +4,38 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class PaquetCartes<E> {
+    // Le paquet principal
     private final ArrayList<E> paquet;
+    // Le paquet contenant les cartes défaussées
     private final ArrayList<E> defausse;
-    private Ile ile;
 
-    PaquetCartes(Ile ile){
+    /**
+     * Constructeur
+     */
+    PaquetCartes(){
         this.paquet = new ArrayList<>();
         this.defausse = new ArrayList<>();
-        this.ile = ile;
     }
 
+    /**
+     * Ajoute une carte au paquet
+     * @param carte la carte à ajouter
+     */
     public void add(E carte){
         this.paquet.add(carte);
     }
 
+    /**
+     * Mélange le paquet de cartes
+     */
     public void melangerPaquet(){
         Collections.shuffle(this.paquet);
     }
 
+    /**
+     * Ajoute une carte à la defausse
+     * @param carte la carte à ajouter
+     */
     public void poserCarteDefausse(E carte){
         this.defausse.add(carte);
     }
@@ -35,6 +49,16 @@ public class PaquetCartes<E> {
         return str;
     }
 
+    /**
+     * Tire la première carte du paquet
+     * Si la carte est la dernière du paquet:
+     *      ajoute la carte à la defausse
+     *      ajoute toutes les cartes de la defausse au paquet
+     *      mélange le paquet
+     * Sinon
+     *      ajoute la carte à la defausse
+     * @return la carte tirée
+     */
     public E tirerCarte(){
         E carte = this.paquet.get(0);
         poserCarteDefausse(carte);
@@ -47,9 +71,11 @@ public class PaquetCartes<E> {
         return carte;
     }
 
+    /**
+     * Tests
+     */
     public static void main(String[] args) {
-        //tests
-        PaquetCartes<Element> cartes = new PaquetCartes<>(new Ile());
+        PaquetCartes<Element> cartes = new PaquetCartes<>();
         cartes.paquet.add(Element.FEU);
         cartes.paquet.add(Element.AIR);
         cartes.paquet.add(Element.FEU);

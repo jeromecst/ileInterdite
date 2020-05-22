@@ -3,6 +3,7 @@ package Ile_Interdite;
 import java.util.Random;
 
 class Ile extends Observable {
+    final Random rd = new Random();
     // On fixe le nombre d'actions max
     public static final int MAXACTIONS = 3;
     // On fixe la taille de la grille.
@@ -13,9 +14,8 @@ class Ile extends Observable {
     public static final int nbJoueurs = 2;
     // Tableau du nombre de joueurs
     Joueur[] joueur = new Joueur[nbJoueurs];
-    // Int qui reconnait le joueur actuel, valeur comprise entre 0 et nbJoueurs - 1
+    // Int qui reconnait le joueur actuel, valeur comprise entre 0 et (nbJoueurs - 1)
     public int joueurActuel = 0;
-    final Random rd = new Random();
     // Compteur qui compte le nombre d'actions du joueurs actuel
     public int compteur = 0;
     // Etat dans lequel les boutons permettent d'assecher une zone adjacente
@@ -24,9 +24,11 @@ class Ile extends Observable {
     private Zone helico;
     //Zones artefacts
     private final Zone[] zoneArte = new Zone[4];
+    // Si la partie est gagné, on envoie l'information à partir de ce boolean
     boolean isWin = false;
+    // Si la partie est perdue, on envoie l'information à partir de ce boolean
     boolean isLost = false;
-    //Paquet de cartes
+    //Paquets de cartes
     PaquetCartes<Zone> cartesZones;
     PaquetCartes<Element> cartesElements;
 
@@ -34,11 +36,7 @@ class Ile extends Observable {
      * Constructeur, rempli la grille de zones aléatoires
      */
     public Ile() {
-        /*
-          Pour éviter les problèmes aux bords, on ajoute une ligne et une
-          colonne de chaque côté, dont les zones n'évolueront pas.
-         */
-        this.cartesZones = new PaquetCartes<>(this);
+        this.cartesZones = new PaquetCartes<>();
         this.zones = new Zone[LARGEUR+1][HAUTEUR+1];
         for(int i=0; i<LARGEUR+1; i++) {
             for(int j=0; j<HAUTEUR+1; j++) {
@@ -52,9 +50,18 @@ class Ile extends Observable {
         fillCartesElements();
     }
 
+    /**
+     * Rempli le paquet de cartes éléments des éléments suivants
+     * - AUCUN
+     * - MONTEEDESEAUX
+     * - FEU
+     * - AIR
+     * - EAU
+     * - TERRE
+     */
     private void fillCartesElements(){
-        this.cartesElements = new PaquetCartes<>(this);
-        for(int i = 0; i < 10; i++){
+        this.cartesElements = new PaquetCartes<>();
+        for(int i = 0; i < 15; i++){
             this.cartesElements.add(Element.AUCUN);
         }
         for(int i = 0; i < 2; i++){
@@ -67,6 +74,10 @@ class Ile extends Observable {
         this.cartesElements.melangerPaquet();
     }
 
+    /**
+     * Fonction qui choisi 4 zones aléatoires et qui y place les 4 artéfacts
+     * Une zone ne peut contenir qu'un seul artefact
+     */
     private void setArtefacts() {
         Element[] arts = {Element.FEU, Element.AIR, Element.EAU, Element.TERRE};
         int x, y, i = 3;
@@ -80,6 +91,13 @@ class Ile extends Observable {
         }
     }
 
+    /**
+     * Fonction qui tire une carte à la fin du tour
+     * Les issues possibles sont:
+     * - La montée des eaux de la zone du joueur actuel
+     * - Le joueur actuel trouve une clée
+     * - Rien ne se passe
+     */
     public void tirageCarteFinDeTour(){
         Element carte = this.cartesElements.tirerCarte();
         switch (carte){
@@ -125,7 +143,7 @@ class Ile extends Observable {
     }
 
     /**
-     * Fonction qui permet d'assecher une zone par rapport un position
+     * Fonction qui permet d'assecher une zone par rapport à une position
      * donnée par le joueur actuel
      * @param direction la direction par rapport au joueur actuel
      * @return vrai si on a pu assécher, faux sinon
@@ -174,7 +192,8 @@ class Ile extends Observable {
     }
 
     /**
-     * Fonction qui innonde 3 zones aléatoires, si la zone est déjà inondé, elle sera submergée
+     * Fonction qui innonde 3 zones aléatoires.
+     * Si la zone est déjà inondé, elle sera submergée
      * On ne submerge pas les zones déjà subermgées
      */
     public void fin_de_tour() {
@@ -198,7 +217,18 @@ class Ile extends Observable {
     }
 
 
-    public Fin testend(){
+    /**
+     * Fonction qui test si la partie est finie ou non
+     * WIN :
+     * - tous les joueurs sont sur la zone helico
+     * - ils ont les 4 artefacts
+     * LOSE :
+     * - un joueur est submergé
+     * - un artefact est submergé
+     * - la zone helico est submergée
+     * @return WIN si la partie est gagné, LOSE si elle est perdue, NONE sinon
+     */
+    public Fin testEnd(){
         if(this.allArtefacts() && allHeliport()){
             return Fin.WIN;
         }
@@ -208,6 +238,10 @@ class Ile extends Observable {
         return Fin.NONE;
     }
 
+    /**
+     * Fonction joueurSurZoneSubmergee
+     * @return vrai si au moins un joueur est sur une zone submergée, faux si aucun n'est submergé
+     */
     private boolean joueurSurZoneSubmergee(){
         for(Joueur j: this.joueur){
             if(j.getZone().estSubmerge()){
@@ -217,6 +251,10 @@ class Ile extends Observable {
         return false;
     }
 
+    /**
+     * Fonction allArtefacts
+     * @return vrai si il y a tous les artefacts au total, faux sinon
+     */
     private boolean allArtefacts(){
         int compteur = 0;
         for(Joueur j: this.joueur){
@@ -227,6 +265,10 @@ class Ile extends Observable {
         return compteur == 4;
     }
 
+    /**
+     * Fonction zoneArtefactSubmergee
+     * @return vrai si une zone artefact est subermegée, faux sinon
+     */
     private boolean zoneArtefactSubmergee(){
         for(Zone z: this.zoneArte){
             if(z.estSubmerge()){
@@ -236,6 +278,10 @@ class Ile extends Observable {
         return false;
     }
 
+    /**
+     * Fonction allHeliport
+     * @return vrai si tous les joueurs sont sur la zone helicoptère, faux sinon
+     */
     private boolean allHeliport(){
         for(Joueur j: this.joueur){
             if(j.x != this.helico.x || j.y != this.helico.y){
