@@ -118,34 +118,31 @@ class VueGrille extends JPanel implements Observer {
         g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/2));
         g.setColor(Color.BLACK);
         g.drawString(j.toString() +" clefs : ", 1, positionY);
+        g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
         for(Clef c: j.getAllKeys()){
             switch (c.getType()){
                 case EAU:
                     g.setColor(Color.BLUE);
                     g.fillOval(beginningXAfterText, positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.WHITE);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
                     g.drawString("EAU", beginningXFontAfterText, positionYtext);
                     break;
                 case TERRE:
                     g.setColor(Color.RED.darker());
                     g.fillOval((int) (beginningXAfterText*1.2), positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.WHITE);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
                     g.drawString("TER", (int) (beginningXFontAfterText*1.2), positionYtext);
                     break;
                 case FEU:
                     g.setColor(Color.YELLOW);
                     g.fillOval((int) (beginningXAfterText*1.4), positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.BLACK);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
                     g.drawString("FEU", (int) (beginningXFontAfterText*1.4), positionYtext);
                     break;
                 case AIR:
                     g.setColor(Color.GRAY);
                     g.fillOval((int) (beginningXAfterText*1.6), positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.WHITE);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
                     g.drawString("AIR", (int) (beginningXFontAfterText*1.6), positionYtext);
                     break;
             }
@@ -172,34 +169,31 @@ class VueGrille extends JPanel implements Observer {
         g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE/2));
         g.setColor(Color.BLACK);
         g.drawString("Artefacts : ", 1, positionY);
+        g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
         for(Element e: j.getAllArtefacts()){
             switch (e){
                 case EAU:
                     g.setColor(Color.BLUE);
                     g.fillOval(beginningXAfterText, positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.WHITE);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
                     g.drawString("EAU", beginningXFontAfterText, positionYtext);
                     break;
                 case TERRE:
                     g.setColor(Color.RED.darker());
                     g.fillOval((int) (beginningXAfterText*1.2), positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.WHITE);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
                     g.drawString("TER", (int) (beginningXFontAfterText*1.2), positionYtext);
                     break;
                 case FEU:
                     g.setColor(Color.YELLOW);
                     g.fillOval((int) (beginningXAfterText*1.4), positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.BLACK);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
                     g.drawString("FEU", (int) (beginningXFontAfterText*1.4), positionYtext);
                     break;
                 case AIR:
                     g.setColor(Color.GRAY);
                     g.fillOval((int) (beginningXAfterText*1.6), positionYBoule, tailleBoule, tailleBoule);
                     g.setColor(Color.WHITE);
-                    g.setFont(new Font("TimesRoman", Font.BOLD, tailleFont));
                     g.drawString("AIR", (int) (beginningXFontAfterText*1.6), positionYtext);
                     break;
             }
@@ -235,6 +229,23 @@ class VueGrille extends JPanel implements Observer {
             case SUBMERGEE: g.setColor(Color.BLUE.darker()); break;
         }
         g.fillRect(x + offset, y + offset, TAILLE - offset, TAILLE  - offset);
+        switch (z.getElement()){
+            case EAU:
+                g.setColor(Color.BLUE);
+                break;
+            case TERRE:
+                g.setColor(Color.RED.darker());
+                break;
+            case FEU:
+                g.setColor(Color.YELLOW);
+                break;
+            case AIR:
+                g.setColor(Color.GRAY);
+                break;
+            case AUCUN:
+                g.setColor(Color.BLUE.darker());
+        }
+        g.fillRect(x + offset, y + offset*4, TAILLE - offset, (int) ((TAILLE  - offset)/10.));
         if(z.isHelico()){
             g.setFont(new Font("TimesRoman", Font.BOLD, TAILLE-offset));
             g.setColor(Color.BLACK);
