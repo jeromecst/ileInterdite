@@ -12,27 +12,13 @@ class Zone {
     private Etat etat;
     private Element element;
     private boolean helico;
-    private double chanceClef = 0;
     private Element artefact = Element.AUCUN;
 
-    public Zone(Ile ile, int x, int y, Element elem) {
+    public Zone(Ile ile, int x, int y) {
         this.ile = ile;
         this.etat = Etat.NORMAL;
         this.x = x; this.y = y;
         this.helico = false;
-        this.element = elem;
-        this.setElem();
-        this.initChance();
-    }
-
-    public Zone(Ile ile, int i, int j) {
-        this(ile, i, j, Element.AUCUN);
-    }
-
-    void initChance() {
-        if(this.getElement() != Element.AUCUN){
-            this.chanceClef = this.ile.rd.nextDouble()/2.+ 0.5;
-        }
     }
 
     void removeArtefact(){
@@ -49,34 +35,6 @@ class Zone {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Permet d'attribuer un élément à une zone
-     */
-    private void setElem(){
-        double pourcent = this.ile.rd.nextDouble();
-        if(pourcent < Ile.SPECIAL){
-            switch (this.ile.rd.nextInt(4)){
-                case 0: this.setElem(Element.EAU); break;
-                case 1: this.setElem(Element.AIR); break;
-                case 2: this.setElem(Element.TERRE); break;
-                case 3: this.setElem(Element.FEU); break;
-            }
-        }
-    }
-
-    public double getChanceClef(){
-        return this.chanceClef;
-    }
-
-
-    void setElem(Element elem){
-        this.element = elem;
-    }
-
-    Element getElement(){
-        return this.element;
     }
 
     boolean innonde(){
@@ -123,7 +81,6 @@ class Zone {
                 ", helico=" + helico +
                 ", x=" + x +
                 ", y=" + y +
-                ", chanceClef=" + chanceClef +
                 '}';
     }
 }

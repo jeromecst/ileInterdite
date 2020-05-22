@@ -10,13 +10,13 @@ class Controleur implements ActionListener{
    }
 
    public void action(){
+       System.out.print("\nJoueur " + this.ile.getJoueurActuel().getNum() + " ");
        this.ile.tirageCarteFinDeTour();
        this.ile.fin_de_tour();
        this.ile.compteur = 0;
        this.ile.joueurActuel+=1;
        this.ile.joueurActuel%= Ile.nbJoueurs;
        this.ile.modeAssecher = false;
-       System.out.print("\nJoueur " + this.ile.getJoueurActuel().getNum() + " ");
        switch (this.ile.testend()){
            case WIN: this.ile.isWin = true; break;
            case LOSE: this.ile.isLost = true; break;

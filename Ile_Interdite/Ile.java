@@ -7,8 +7,6 @@ class Ile extends Observable {
     public static final int MAXACTIONS = 3;
     // On fixe la taille de la grille.
     public static final int HAUTEUR=7, LARGEUR=7;
-    // On fixe le pourcentage de zones associées à un élément.
-    public static final double SPECIAL=.9;
     // On stocke un tableau de zones.
     private final Zone[][] zones;
     // Nombre de joueurs
@@ -88,13 +86,13 @@ class Ile extends Observable {
             case AUCUN: break;
             case MONTEEDESEAUX:
                 this.getJoueurActuel().getZone().innonde();
-                System.out.println("Montée des eaux !");
+                System.out.print("Montée des eaux !");
                 break;
             case AIR:
             case FEU:
             case EAU:
             case TERRE: this.getJoueurActuel().ajouteClefs(new Clef(carte));
-            System.out.println("Joueur " + this.getJoueurActuel().getNum() + " trouve une clée !");
+            System.out.print("trouve une clée !");
         }
     }
 
@@ -210,7 +208,6 @@ class Ile extends Observable {
         return Fin.NONE;
     }
 
-    //TODO: Je ne sais pas si on garde ça
     private boolean joueurSurZoneSubmergee(){
         for(Joueur j: this.joueur){
             if(j.getZone().estSubmerge()){
