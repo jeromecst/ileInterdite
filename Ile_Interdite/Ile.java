@@ -7,7 +7,7 @@ class Ile extends Observable {
     // On fixe le nombre d'actions max
     public static final int MAXACTIONS = 3;
     // On fixe la taille de la grille.
-    public static final int HAUTEUR=8, LARGEUR=8;
+    public static final int HAUTEUR=6, LARGEUR=6;
     // On stocke un tableau de zones.
     private final Zone[][] zones;
     // Nombre de joueurs
@@ -77,8 +77,10 @@ class Ile extends Observable {
         for(int i = 0; i < 15; i++){
             this.cartesElements.add(Element.AUCUN);
         }
-        for(int i = 0; i < 2; i++){
+        for(int i = 0; i < 5; i++){
             this.cartesElements.add(Element.MONTEEDESEAUX);
+        }
+        for(int i = 0; i < 2; i++){
             this.cartesElements.add(Element.FEU);
             this.cartesElements.add(Element.AIR);
             this.cartesElements.add(Element.EAU);
@@ -302,7 +304,7 @@ class Ile extends Observable {
      */
     private boolean zoneArtefactSubmergee(){
         for(Zone z: this.zoneArte){
-            if(z.estSubmerge()){
+            if(z.estSubmerge() && z.getArtefact() != Element.AUCUN){
                 return true;
             }
         }

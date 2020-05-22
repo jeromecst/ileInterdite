@@ -135,9 +135,6 @@ class CVue {
            - Indiquer qu'on quitte l'application si la fenêtre est fermée.
            - Préciser que la fenêtre doit bien apparaître à l'écran.
          */
-        Keyboard keys = new Keyboard(ile);
-        frame.add(keys);
-        frame.addKeyListener(keys);
         frame.setFocusable(true);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
